@@ -7,18 +7,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{728D1F58-93E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0B8CB2D2-6A1E-47EA-ABAE-6D9FE4379616}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{D4B0DD7D-12EF-411E-BF4D-19D81A122D2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{D4B0DD7D-12EF-411E-BF4D-19D81A122D2D}"
 	ProjectSection(ProjectDependencies) = postProject
 		{139A0906-5007-46BD-B425-94B88AC9785B} = {139A0906-5007-46BD-B425-94B88AC9785B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domaina\Domain.csproj", "{6AA6D8A6-C0C3-4C2C-8C62-0A15E9683A59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{6AA6D8A6-C0C3-4C2C-8C62-0A15E9683A59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Applications\Application.csproj", "{F7FBB9D2-AB46-4383-88D3-6629A59271B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{F7FBB9D2-AB46-4383-88D3-6629A59271B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation", "Presentationa\Presentation.csproj", "{CA7727A7-429D-423C-A478-7349F8693581}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentation\Presentation.csproj", "{CA7727A7-429D-423C-A478-7349F8693581}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructurea\Infrastructure.csproj", "{139A0906-5007-46BD-B425-94B88AC9785B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{139A0906-5007-46BD-B425-94B88AC9785B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6AA6D8A6-C0C3-4C2C-8C62-0A15E9683A59} = {6AA6D8A6-C0C3-4C2C-8C62-0A15E9683A59}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
