@@ -1,12 +1,11 @@
 ﻿using Domain.Shared;
 
-namespace Domain.Errors
+namespace Domain.Errors;
+
+public static class DomainErrors
 {
-    public static class DomainErrors
-    {
-        public static class GlobalErrors
-        {
-            public static Func<string, Error> MiddlewareErrorHandler => error => new("GlobalErrors.MiddlewareErrorHandler", error);
-        }
+    public static class GlobalErrors
+    { 
+        public static Func<string, Error> MiddlewareErrorHandler => error => new("GlobalErrors.MiddlewareErrorHandler", error);
     }
 }
