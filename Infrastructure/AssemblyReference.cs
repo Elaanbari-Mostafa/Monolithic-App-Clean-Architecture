@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 
-namespace Infrastructure
+namespace Infrastructure;
+
+public static class InfrastructureAssemblyReference
 {
-    internal static class AssemblyReference
-    {
-        public static readonly Assembly Assembly = typeof(AssemblyReference).Assembly;
-    }
+    public static readonly Assembly Assembly = typeof(InfrastructureAssemblyReference).Assembly;
 }
+

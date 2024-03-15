@@ -1,9 +1,12 @@
+using Infrastructure;
+using Presentation;
+
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddApplicationPart(PresentationAssemblyReference.Assembly);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
