@@ -1,13 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Presentation.Abstractions
+namespace Presentation.Abstractions;
+
+[ApiController]
+internal abstract class ApiController : ControllerBase
 {
-    [ApiController]
-    internal abstract class ApiController : ControllerBase
-    {
-        protected readonly ISender Sender;
-        protected ApiController(ISender sender)
-            => Sender = sender ?? throw new ArgumentNullException(nameof(sender));
-    }
+    protected readonly ISender Sender;
+    protected ApiController(ISender sender)
+        => Sender = sender ?? throw new ArgumentNullException(nameof(sender));
 }

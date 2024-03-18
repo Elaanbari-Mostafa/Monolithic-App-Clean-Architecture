@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Data;
 
-public sealed class ApplicationDbContext : DbContext
+internal sealed class ApplicationDbContext : DbContext
 {
     private readonly IConfiguration _configuration;
     private const string _connectionStringName = "DefaultConnection";
