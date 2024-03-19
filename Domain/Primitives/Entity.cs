@@ -1,9 +1,31 @@
 ﻿namespace Domain.Primitives;
 
-internal abstract class Entity
+public abstract class Entity : IEquatable<Entity>
 {
-    protected Guid Id { get; private init; }
     protected Entity(Guid id) => Id = id;
+
+    public Guid Id { get; private init; }
+
+    public static bool operator ==(Entity? first, Entity? second) =>
+        first is not null && second is not null && first.Equals(second);
+
+    public static bool operator !=(Entity? first, Entity? second) =>
+        !(first == second);
+
+    public bool Equals(Entity? other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+
+        if (other.GetType() != GetType())
+        {
+            return false;
+        }
+
+        return other.Id == Id;
+    }
 
     public override bool Equals(object? obj)
     {
@@ -25,9 +47,5 @@ internal abstract class Entity
         return entity.Id == Id;
     }
 
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Id);
-    }
+    public override int GetHashCode() => Id.GetHashCode() * 41;
 }
-

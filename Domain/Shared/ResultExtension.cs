@@ -13,4 +13,14 @@ public static class ResultExtension
         => result.IsSuccess
                 ? predicate(result.Value)
                 : Failure<TOut>(result.Error);
+
+    public static Result<TValue> OnSuccess<TValue>(this Result<TValue> result,Action<TValue> action)
+    {
+        if (result.IsSuccess)
+        {
+            action(result.Value);
+        }
+
+        return result;
+    }
 }

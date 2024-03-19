@@ -8,7 +8,7 @@ namespace Infrastructure.Middlewares
         private readonly RequestDelegate _next;
 
         public ExceptionHandlingMiddleware(RequestDelegate next)
-            => _next = next ?? throw new ArgumentNullException(nameof(next));
+            => _next = CustomArgumentNullException.ThrowIfNull(next);
 
         public async Task InvokeAsync(HttpContext context)
         {

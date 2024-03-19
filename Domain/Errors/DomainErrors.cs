@@ -1,4 +1,5 @@
 ﻿using Domain.Shared;
+using System.Diagnostics.Metrics;
 
 namespace Domain.Errors;
 
@@ -31,6 +32,19 @@ public static class DomainErrors
             public static readonly Error Empty = new("LastName.Empty", "Last Name is empty");
 
             public static readonly Error TooLong = new("LastName.TooLong", "Last Name is too long");
+        }
+
+        public static class Password
+        {
+            public static readonly Error Empty = new("Password.Empty", "Password is empty");
+
+            public static readonly Error PasswordMeetsTheRequiredCriteria = new (
+                "Password.PasswordMeetsTheRequiredCriteria",
+                "Password must contain at least one uppercase letter, one lowercase letter, one '@' character, and be between 8 and 20 characters long");
+
+            public static readonly Error NewPasswordEqualToThePreviousPassword = new(
+                       "Password.NewPasswordEqualToThePreviousPassword",
+                       "A new password can’t be equal to the previous password");
         }
     }
 }
