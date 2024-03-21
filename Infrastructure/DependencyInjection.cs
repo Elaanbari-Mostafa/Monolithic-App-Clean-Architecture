@@ -10,7 +10,8 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection service)
     {
         service.AddDbContext<ApplicationDbContext>();
-        service.AddScoped<IUserRepository,UserRepository>();
+        service.AddScoped<IUserRepository, UserRepository>();
+        service.AddScoped<IUnitOfWork, UnitOfWork>();
         return service;
     }
 }

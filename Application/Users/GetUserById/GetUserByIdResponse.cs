@@ -1,6 +1,6 @@
 ﻿namespace Application.Users.GetUserById;
 
-public record GetUserByIdResponse(
+public sealed record GetUserByIdResponse(
                         string FirstName,
                         string LastName,
                         string Email,

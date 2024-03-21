@@ -10,4 +10,14 @@ public interface IUserRepository
     /// <param name="Id"></param>
     /// <returns>User instance</returns>
     Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken);
+    /// <summary>
+    /// Add user
+    /// </summary>
+    /// <param name="user"></param>
+    void AddUser(User user);
+    /// <summary>
+    /// Update user
+    /// </summary>
+    /// <param name="user"></param>
+    void UpdateUser(User user);
 }

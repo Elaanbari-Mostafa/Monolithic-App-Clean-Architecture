@@ -16,4 +16,8 @@ public sealed class UserRepository : IUserRepository
         => await _dbContext.Set<User>()
                     .Where(u => u.Id == id)
                     .FirstOrDefaultAsync(cancellationToken);
+
+    public void AddUser(User user) => _dbContext.Set<User>().Add(user);
+
+    public void UpdateUser(User user) => _dbContext.Set<User>().Update(user);
 }

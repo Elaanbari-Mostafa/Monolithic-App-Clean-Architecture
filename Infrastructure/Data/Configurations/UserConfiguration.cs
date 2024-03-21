@@ -19,8 +19,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(FirstName.MaxLength);
 
         builder.Property(u => u.Password)
-            .HasConversion(u => u.Value, u => Password.Create(u).Value)
-            .HasMaxLength(Password.MaxLength);
+            .HasConversion(u => u.Value, u => Password.FromHashedString(u));
 
         builder.Property(u => u.LastName)
             .HasConversion(u => u.Value, u => LastName.Create(u).Value)
@@ -29,6 +28,8 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.Email)
             .HasConversion(u => u.Value, u => Email.Create(u).Value)
             .HasMaxLength(Email.MaxLength);
+
+        builder.Property(u => u.DateOfBirth).HasColumnType("date");
 
         builder.HasIndex(x => x.Email).IsUnique();
     }

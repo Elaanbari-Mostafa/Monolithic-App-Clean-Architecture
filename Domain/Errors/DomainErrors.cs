@@ -7,7 +7,7 @@ public static class DomainErrors
 {
     public static class GlobalErrors
     {
-        public static Func<string, Error> MiddlewareErrorHandler => error => new("GlobalErrors.MiddlewareErrorHandler", error);
+        public static Func<string, Error> MiddlewareErrorHandler => message => new("GlobalErrors.MiddlewareErrorHandler", message);
     }
 
     public static class ValueObject
@@ -46,5 +46,10 @@ public static class DomainErrors
                        "Password.NewPasswordEqualToThePreviousPassword",
                        "A new password can’t be equal to the previous password");
         }
+    }
+
+    public static class User
+    {
+        public static readonly Func<Guid, Error> UserNotFound = id => new("User.UserNotFound",$"User with this id {id} is not found!");
     }
 }

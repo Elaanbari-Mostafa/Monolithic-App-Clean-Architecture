@@ -13,7 +13,7 @@ public sealed class Password : ValueObject
 
     public string Value { get; private init; }
 
-    private Password(string value) => Value = value;
+    internal Password(string value) => Value = value;
 
     public static Result<Password> Create(string value)
         => Result.Create(value)
@@ -31,4 +31,15 @@ public sealed class Password : ValueObject
 
     public bool VerifyPassword(string password)
         => BCrypt.Net.BCrypt.Verify(Value, password);
+
+    private static bool IsBcryptHash(string hashedValue)
+    {
+        // BCrypt hashes start with "$2a$", "$2b$", "$2y$", or "$2x$"
+        return hashedValue.StartsWith("$2a$") || hashedValue.StartsWith("$2b$") || hashedValue.StartsWith("$2y$") || hashedValue.StartsWith("$2x$");
+    }
+
+    public static Password FromHashedString(string hashedValue)
+         => IsBcryptHash(hashedValue)
+                ? new(hashedValue)
+                : throw new InvalidOperationException("The string given is not hashed !!!");
 }

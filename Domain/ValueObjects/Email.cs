@@ -15,7 +15,7 @@ public sealed class Email : ValueObject
         => Result.Create(value)
                      .Ensure(string.IsNullOrWhiteSpace, DomainErrors.ValueObject.Email.Empty)
                      .Ensure(p => p.Length > MaxLength, DomainErrors.ValueObject.Email.TooLong)
-                     .Ensure(p => p.Split("@").Length > 1, DomainErrors.ValueObject.Email.InvalidFormat)
+                     .Ensure(p => p.Split("@").Length == 1, DomainErrors.ValueObject.Email.InvalidFormat)
                      .Map(p => new Email(p));
 
     public override IEnumerable<object> GetAtomicValues()
