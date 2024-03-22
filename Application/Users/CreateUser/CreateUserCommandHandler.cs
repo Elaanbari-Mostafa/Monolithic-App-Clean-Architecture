@@ -1,9 +1,10 @@
 ﻿using Application.Abstractions.Messaging;
 using Domain.Entities;
+using Domain.Primitives;
 using Domain.Repositories;
 using Domain.Shared;
 using Domain.ValueObjects;
-using static CustomArgumentNullException;
+using static Domain.Exceptions.CustomArgumentNullException;
 
 namespace Application.Users.CreateUser;
 
@@ -17,6 +18,10 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
 
     public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        var test = VerifyValueObjects(
+            Email.Create(request.Email), 
+            FirstName.Create(request.FirstName));
+
         var emailResult = Email.Create(request.Email);
         if (emailResult.IsFailure)
         {
@@ -47,5 +52,21 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return user.Id;
+    }
+
+
+    public Result<object> VerifyValueObjects(params Result<object>[] props)
+    {
+        var test = new List<Result<object>>();
+        foreach (var item in props)
+        {
+            if (item.IsFailure)
+            {
+                return Result.Failure<object>(item.Error);
+            }
+            test.Add(item);
+        }
+
+        return Result.Success<object>(test);
     }
 }

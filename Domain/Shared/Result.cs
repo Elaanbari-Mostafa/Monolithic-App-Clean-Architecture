@@ -1,4 +1,6 @@
-﻿namespace Domain.Shared;
+﻿using Domain.Primitives;
+
+namespace Domain.Shared;
 
 public class Result
 {
@@ -24,4 +26,6 @@ public class Result
     public static Result<TValue> Create<TValue>(TValue? value, Error? error = null) => value is null
         ? Failure<TValue>(error ?? Error.NullValue)
         : Success(value);
+
+    public static Result<T> VerifyValueObjects<T>() => Failure<T>(Error.None);
 }

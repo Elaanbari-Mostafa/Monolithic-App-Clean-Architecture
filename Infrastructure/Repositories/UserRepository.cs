@@ -2,6 +2,7 @@
 using Domain.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using static Domain.Exceptions.CustomArgumentNullException;
 
 namespace Infrastructure.Repositories;
 
@@ -10,7 +11,7 @@ public sealed class UserRepository : IUserRepository
     private readonly ApplicationDbContext _dbContext;
 
     public UserRepository(ApplicationDbContext dbContext)
-        => _dbContext = CustomArgumentNullException.ThrowIfNull(dbContext);
+        => _dbContext = ThrowIfNull(dbContext);
 
     public async Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => await _dbContext.Set<User>()

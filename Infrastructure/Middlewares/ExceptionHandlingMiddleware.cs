@@ -1,5 +1,6 @@
 ﻿using Domain.Errors;
 using Microsoft.AspNetCore.Http;
+using static Domain.Exceptions.CustomArgumentNullException;
 
 namespace Infrastructure.Middlewares
 {
@@ -8,7 +9,7 @@ namespace Infrastructure.Middlewares
         private readonly RequestDelegate _next;
 
         public ExceptionHandlingMiddleware(RequestDelegate next)
-            => _next = CustomArgumentNullException.ThrowIfNull(next);
+            => _next = ThrowIfNull(next);
 
         public async Task InvokeAsync(HttpContext context)
         {

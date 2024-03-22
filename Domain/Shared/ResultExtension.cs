@@ -5,16 +5,16 @@ namespace Domain.Shared;
 public static class ResultExtension
 {
     public static Result<TValue> Ensure<TValue>(this Result<TValue> result, Func<TValue, bool> predicate, Error error)
-        => (result.IsSuccess && !predicate(result.Value)) 
-                ? result 
+        => (result.IsSuccess && !predicate(result.Value))
+                ? result
                 : Failure<TValue>(error);
 
-    public static Result<TOut> Map<TIn,TOut>(this Result<TIn> result, Func<TIn,TOut> predicate)
+    public static Result<TOut> Map<TIn, TOut>(this Result<TIn> result, Func<TIn, TOut> predicate)
         => result.IsSuccess
                 ? predicate(result.Value)
                 : Failure<TOut>(result.Error);
 
-    public static Result<TValue> OnSuccess<TValue>(this Result<TValue> result,Action<TValue> action)
+    public static Result<TValue> OnSuccess<TValue>(this Result<TValue> result, Action<TValue> action)
     {
         if (result.IsSuccess)
         {
@@ -22,5 +22,16 @@ public static class ResultExtension
         }
 
         return result;
+    }
+
+    public static Result<TValue> EnsureValueObject<TValue>(this Result<TValue> result, object value, Func<object, Result<TValue>> create)
+    {
+        if (result.IsFailure)
+        {
+            return result;
+        }
+
+        var newResult = create(value);
+        return newResult;
     }
 }

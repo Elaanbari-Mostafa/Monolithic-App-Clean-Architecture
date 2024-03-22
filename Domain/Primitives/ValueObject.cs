@@ -1,8 +1,15 @@
-﻿namespace Domain.Primitives;
+﻿using Domain.Shared;
+
+namespace Domain.Primitives;
 
 public abstract class ValueObject : IEquatable<ValueObject>
 {
     public abstract IEnumerable<object> GetAtomicValues();
+
+    public Result<T> Create<T>(params object[] values)
+    {
+        throw new NotImplementedException();
+    }
 
     public bool Equals(ValueObject? other)
     {

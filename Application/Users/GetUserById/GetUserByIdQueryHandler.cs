@@ -3,7 +3,7 @@ using Domain.Errors;
 using Domain.Repositories;
 using Domain.Shared;
 using Mapster;
-using static CustomArgumentNullException;
+using static Domain.Exceptions.CustomArgumentNullException;
 
 namespace Application.Users.GetUserById;
 
