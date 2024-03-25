@@ -1,4 +1,5 @@
-﻿using static Domain.Shared.Result;
+﻿using Microsoft.AspNetCore.Mvc;
+using static Domain.Shared.Result;
 
 namespace Domain.Shared;
 
@@ -24,14 +25,8 @@ public static class ResultExtension
         return result;
     }
 
-    public static Result<TValue> EnsureValueObject<TValue>(this Result<TValue> result, object value, Func<object, Result<TValue>> create)
-    {
-        if (result.IsFailure)
-        {
-            return result;
-        }
-
-        var newResult = create(value);
-        return newResult;
-    }
+    public static IActionResult MapActionResult<TValue>(
+        this Result<TValue> result,
+        Func<TValue, IActionResult> onSuccess,
+        Func<Error, IActionResult> onFailure) => result.IsSuccess ? onSuccess(result.Value) : onFailure(result.Error);
 }

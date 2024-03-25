@@ -1,6 +1,6 @@
 ﻿using Application.Abstractions.Messaging;
 using Domain.Entities;
-using Domain.Primitives;
+using Domain.Errors;
 using Domain.Repositories;
 using Domain.Shared;
 using Domain.ValueObjects;
@@ -18,35 +18,24 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
 
     public async Task<Result<Guid>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var test = VerifyValueObjects(
-            Email.Create(request.Email), 
-            FirstName.Create(request.FirstName));
+        var result = Verify(
+            request,
+            out Email? email,
+            out FirstName? firstName,
+            out LastName? lastName,
+            out Password? password);
 
-        var emailResult = Email.Create(request.Email);
-        if (emailResult.IsFailure)
+        if (result.IsFailure)
         {
-            return Result.Failure<Guid>(emailResult.Error);
+            return Result.Failure<Guid>(result.Error);
         }
 
-        var firstNameResult = FirstName.Create(request.FirstName);
-        if (firstNameResult.IsFailure)
+        if (await _userRepository.IsEmailUniqueAsync(email!, cancellationToken))
         {
-            return Result.Failure<Guid>(firstNameResult.Error);
+            return Result.Failure<Guid>(DomainErrors.User.EmailAlreadyInUse);
         }
 
-        var lastNameResult = LastName.Create(request.LastName);
-        if (lastNameResult.IsFailure)
-        {
-            return Result.Failure<Guid>(lastNameResult.Error);
-        }
-
-        var passwordResult = Password.Create(request.Password);
-        if (passwordResult.IsFailure)
-        {
-            return Result.Failure<Guid>(passwordResult.Error);
-        }
-
-        User user = User.Create(firstNameResult.Value, lastNameResult.Value, emailResult.Value, passwordResult.Value, request.UserType, request.DateOfBirth);
+        User user = User.Create(firstName!, lastName!, email!, password!, request.UserType, request.DateOfBirth);
 
         _userRepository.AddUser(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -54,19 +43,38 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         return user.Id;
     }
 
-
-    public Result<object> VerifyValueObjects(params Result<object>[] props)
+    public static Result Verify(CreateUserCommand request, out Email? email, out FirstName? firstName, out LastName? lastName, out Password? password)
     {
-        var test = new List<Result<object>>();
-        foreach (var item in props)
-        {
-            if (item.IsFailure)
-            {
-                return Result.Failure<object>(item.Error);
-            }
-            test.Add(item);
-        }
+        email = null; firstName = null; lastName = null; password = null;
 
-        return Result.Success<object>(test);
+        var emailResult = Email.Create(request.Email);
+        if (emailResult.IsFailure)
+        {
+            return Result.Failure(emailResult.Error);
+        }
+        email = emailResult.Value;
+
+        var firstNameResult = FirstName.Create(request.FirstName);
+        if (firstNameResult.IsFailure)
+        {
+            return Result.Failure(firstNameResult.Error);
+        }
+        firstName = firstNameResult.Value;
+
+        var lastNameResult = LastName.Create(request.LastName);
+        if (lastNameResult.IsFailure)
+        {
+            return Result.Failure(lastNameResult.Error);
+        }
+        lastName = lastNameResult.Value;
+
+        var passwordResult = Password.Create(request.Password);
+        if (passwordResult.IsFailure)
+        {
+            return Result.Failure(passwordResult.Error);
+        }
+        password = passwordResult.Value;
+
+        return Result.Success();
     }
 }

@@ -34,6 +34,10 @@ public sealed class User : Entity, IAuditableEntity
         LastName = lastName;
     }
 
+    public void Update(FirstName firstName, LastName lastName, Email email, UserType userType, DateTime dateOfBirth)
+        => (FirstName, LastName, Email, UserType, DateOfBirth) = (firstName, lastName, email, userType, dateOfBirth);
+
+
     public Result<Password> ChangePassword(Password newPassword)
         => Result.Create(newPassword)
             .Ensure(p => p.Equals(Password), DomainErrors.ValueObject.Password.NewPasswordEqualToThePreviousPassword)

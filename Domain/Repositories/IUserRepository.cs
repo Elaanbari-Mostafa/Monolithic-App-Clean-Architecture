@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.ValueObjects;
 
 namespace Domain.Repositories;
 
@@ -20,4 +21,10 @@ public interface IUserRepository
     /// </summary>
     /// <param name="user"></param>
     void UpdateUser(User user);
+    /// <summary>
+    /// is email is unique
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns>bool</returns>
+    Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken);
 }

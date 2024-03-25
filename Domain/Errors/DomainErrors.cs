@@ -1,5 +1,4 @@
 ﻿using Domain.Shared;
-using System.Diagnostics.Metrics;
 
 namespace Domain.Errors;
 
@@ -38,7 +37,7 @@ public static class DomainErrors
         {
             public static readonly Error Empty = new("Password.Empty", "Password is empty");
 
-            public static readonly Error PasswordMeetsTheRequiredCriteria = new (
+            public static readonly Error PasswordMeetsTheRequiredCriteria = new(
                 "Password.PasswordMeetsTheRequiredCriteria",
                 "Password must contain at least one uppercase letter, one lowercase letter, one '@' character, and be between 8 and 20 characters long");
 
@@ -50,6 +49,7 @@ public static class DomainErrors
 
     public static class User
     {
-        public static readonly Func<Guid, Error> UserNotFound = id => new("User.UserNotFound",$"User with this id {id} is not found!");
+        public static readonly Func<Guid, Error> UserNotFound = id => new("User.UserNotFound", $"User with this id {id} is not found!");
+        public static readonly Error EmailAlreadyInUse = new("User.EmailAlreadyInUse", "The specified email is already in use");
     }
 }

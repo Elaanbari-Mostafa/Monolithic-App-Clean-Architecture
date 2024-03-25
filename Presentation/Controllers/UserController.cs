@@ -1,5 +1,7 @@
 ﻿using Application.Users.CreateUser;
 using Application.Users.GetUserById;
+using Application.Users.UpdateUser;
+using Domain.Shared;
 using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -22,9 +24,9 @@ public sealed class UserController : ApiController
 
         var result = await Sender.Send(command, cancellationToken);
 
-        return result.IsSuccess
-            ? Ok(result)
-            : BadRequest(result.Error);
+        return result.MapActionResult(
+            onSuccess: value => Ok(value),
+            onFailure: BadRequest);
     }
 
     [HttpGet("{id:Guid}")]
@@ -34,8 +36,18 @@ public sealed class UserController : ApiController
 
         var result = await Sender.Send(command, cancellationToken);
 
-        return result.IsSuccess
-            ? Ok(result.Value)
-            : BadRequest(result.Error);
+        return result.MapActionResult(Ok, BadRequest);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
+    {
+        var command = request.Adapt<UpdateUserCommand>();
+
+        var result = await Sender.Send(command, cancellationToken);
+
+        return result.IsSuccess 
+            ? NoContent() 
+            : NotFound(result.Error);
     }
 }
