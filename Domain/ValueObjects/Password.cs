@@ -13,7 +13,7 @@ public sealed class Password : ValueObject
 
     public string Value { get; private init; }
 
-    internal Password(string value) => Value = value;
+    private Password(string value) => Value = value;
 
     public static Result<Password> Create(string value)
         => Result.Create(value)
@@ -30,7 +30,7 @@ public sealed class Password : ValueObject
         => BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt(12));
 
     public bool VerifyPassword(string password)
-        => BCrypt.Net.BCrypt.Verify(Value, password);
+        => BCrypt.Net.BCrypt.Verify(password, Value);
 
     private static bool IsBcryptHash(string hashedValue)
     {

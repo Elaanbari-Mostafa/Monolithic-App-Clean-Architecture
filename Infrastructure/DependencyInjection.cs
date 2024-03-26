@@ -1,4 +1,6 @@
-﻿using Domain.Repositories;
+﻿using Application.Abstractions;
+using Domain.Repositories;
+using Infrastructure.Authentification;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +14,7 @@ public static class DependencyInjection
         service.AddDbContext<ApplicationDbContext>();
         service.AddScoped<IUserRepository, UserRepository>();
         service.AddScoped<IUnitOfWork, UnitOfWork>();
+        service.AddSingleton<IJwtProvider, JwtProvider>();
         return service;
     }
 }

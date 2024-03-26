@@ -29,4 +29,9 @@ public static class ResultExtension
         this Result<TValue> result,
         Func<TValue, IActionResult> onSuccess,
         Func<Error, IActionResult> onFailure) => result.IsSuccess ? onSuccess(result.Value) : onFailure(result.Error);
+
+    public static IActionResult MapActionResult(
+        this Result result,
+        Func<IActionResult> onSuccess,
+        Func<Error, IActionResult> onFailure) => result.IsSuccess ? onSuccess() : onFailure(result.Error);
 }

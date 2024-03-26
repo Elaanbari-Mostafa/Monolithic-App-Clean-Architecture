@@ -29,9 +29,9 @@ public sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand
         }
 
         var user = await _userRepository.GetUserByIdAsync(request.Id, cancellationToken);
-        if (user == null)
+        if (user is null)
         {
-            return Result.Failure(DomainErrors.User.UserNotFound(request.Id));
+            return Result.Failure(DomainErrors.User.UserWithIdNotFound(request.Id));
         }
 
         user.Update(firstName!, lastName!, email!, request.UserType, request.DateOfBirth);

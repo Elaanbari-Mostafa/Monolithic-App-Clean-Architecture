@@ -49,7 +49,12 @@ public static class DomainErrors
 
     public static class User
     {
-        public static readonly Func<Guid, Error> UserNotFound = id => new("User.UserNotFound", $"User with this id {id} is not found!");
+        public static readonly Func<Guid, Error> UserWithIdNotFound = id => new("User.UserWithIdNotFound", $"User with this id {id} is not found!");
+
+        public static readonly Func<string, Error> UserWithEmailNotFound = email => new("User.UserWithEmailNotFound", $"User with this email {email} is not found!");
+
         public static readonly Error EmailAlreadyInUse = new("User.EmailAlreadyInUse", "The specified email is already in use");
+
+        public static readonly Error InvalidCredentials = new("User.InvalidCredentials", "The provided credentials are invalid");
     }
 }

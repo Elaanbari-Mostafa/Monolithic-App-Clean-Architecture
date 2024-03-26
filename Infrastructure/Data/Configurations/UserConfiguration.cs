@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Data.Configurations;
 
-internal class UserConfiguration : IEntityTypeConfiguration<User>
+internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
@@ -29,7 +29,7 @@ internal class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(u => u.Value, u => Email.Create(u).Value)
             .HasMaxLength(Email.MaxLength);
 
-        builder.Property(u => u.DateOfBirth).HasColumnType("date");
+        builder.Property(u => u.DateOfBirth).HasColumnType(DbDataTypes.SqlServer.Date);
 
         builder.HasIndex(x => x.Email).IsUnique();
     }

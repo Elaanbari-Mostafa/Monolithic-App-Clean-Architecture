@@ -2,5 +2,5 @@
 
 internal static class TableNames
 {
-    public static string User = nameof(User);
+    public const string User = nameof(User);
 }

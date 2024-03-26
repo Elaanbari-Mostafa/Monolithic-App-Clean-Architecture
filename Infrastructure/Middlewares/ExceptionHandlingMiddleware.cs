@@ -8,8 +8,7 @@ namespace Infrastructure.Middlewares
     {
         private readonly RequestDelegate _next;
 
-        public ExceptionHandlingMiddleware(RequestDelegate next)
-            => _next = ThrowIfNull(next);
+        public ExceptionHandlingMiddleware(RequestDelegate next) => _next = ThrowIfNull(next);
 
         public async Task InvokeAsync(HttpContext context)
         {
@@ -21,7 +20,7 @@ namespace Infrastructure.Middlewares
             {
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response.WriteAsync(DomainErrors.GlobalErrors.MiddlewareErrorHandler(ex.Message));
+                await context.Response.WriteAsJsonAsync(DomainErrors.GlobalErrors.MiddlewareErrorHandler(ex.Message));
             }
         }
     }

@@ -3,7 +3,6 @@ using Domain.Repositories;
 using Domain.ValueObjects;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 using static Domain.Exceptions.CustomArgumentNullException;
 
 namespace Infrastructure.Repositories;
@@ -16,9 +15,7 @@ public sealed class UserRepository : IUserRepository
         => _dbContext = ThrowIfNull(dbContext);
 
     public async Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        => await _dbContext.Set<User>()
-                    .Where(u => u.Id == id)
-                    .FirstOrDefaultAsync(cancellationToken);
+        => await _dbContext.Set<User>().FindAsync(new object?[] { id }, cancellationToken);
 
     public void AddUser(User user) => _dbContext.Set<User>().Add(user);
 
@@ -28,4 +25,9 @@ public sealed class UserRepository : IUserRepository
         => await _dbContext.Set<User>()
                      .AsNoTracking()
                      .AnyAsync(u => u.Email.Equals(email), cancellationToken);
+
+    public async Task<User?> GetUserByEmailAsync(Email email, CancellationToken cancellationToken = default)
+        => await _dbContext.Set<User>()
+                     .AsNoTracking()
+                     .FirstOrDefaultAsync(u => u.Email.Equals(email), cancellationToken);
 }

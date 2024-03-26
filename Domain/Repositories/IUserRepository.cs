@@ -27,4 +27,10 @@ public interface IUserRepository
     /// <param name="email"></param>
     /// <returns>bool</returns>
     Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken);
+    /// <summary>
+    /// get user by email
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns>user</returns>
+    Task<User?> GetUserByEmailAsync(Email email, CancellationToken cancellationToken);
 }
