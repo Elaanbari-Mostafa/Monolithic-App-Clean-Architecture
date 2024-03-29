@@ -1,6 +1,6 @@
 ﻿namespace Domain.Primitives;
 
-internal interface IAuditableEntity
+public interface IAuditableEntity
 {
     DateTime CreatedOnUtc { get; set; }
     DateTime? ModifiedOnUtc { get; set; }

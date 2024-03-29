@@ -37,9 +37,16 @@ public sealed class User : Entity, IAuditableEntity
     public void Update(FirstName firstName, LastName lastName, Email email, UserType userType, DateTime dateOfBirth)
         => (FirstName, LastName, Email, UserType, DateOfBirth) = (firstName, lastName, email, userType, dateOfBirth);
 
+    public Result<Password> ChangePassword(string newPassword)
+    {
+        var passwordResult = Password.Create(newPassword);
+        if (passwordResult.IsFailure)
+        {
+            return Result.Failure<Password>(passwordResult.Error);
+        }
 
-    public Result<Password> ChangePassword(Password newPassword)
-        => Result.Create(newPassword)
-            .Ensure(p => p.Equals(Password), DomainErrors.ValueObject.Password.NewPasswordEqualToThePreviousPassword)
-            .OnSuccess(p => Password = p);
+        return Result.Create(passwordResult.Value)
+                .Ensure(p => p.VerifyPassword(newPassword), DomainErrors.ValueObject.Password.NewPasswordEqualToThePreviousPassword)
+                .OnSuccess(p => Password = p);
+    }
 }
