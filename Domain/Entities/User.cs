@@ -34,8 +34,8 @@ public sealed class User : Entity, IAuditableEntity
         LastName = lastName;
     }
 
-    public void Update(FirstName firstName, LastName lastName, Email email, UserType userType, DateTime dateOfBirth)
-        => (FirstName, LastName, Email, UserType, DateOfBirth) = (firstName, lastName, email, userType, dateOfBirth);
+    public void Update(FirstName firstName, LastName lastName, Email email, DateTime dateOfBirth)
+        => (FirstName, LastName, Email, DateOfBirth) = (firstName, lastName, email, dateOfBirth);
 
     public Result<Password> ChangePassword(string newPassword)
     {

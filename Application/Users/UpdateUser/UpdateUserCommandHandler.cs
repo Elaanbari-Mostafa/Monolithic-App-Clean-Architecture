@@ -34,13 +34,17 @@ public sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand
             return Result.Failure(DomainErrors.User.UserWithIdNotFound(request.Id));
         }
 
-        user.Update(firstName!, lastName!, email!, request.UserType, request.DateOfBirth);
+        user.Update(firstName!, lastName!, email! ,request.DateOfBirth);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
     }
 
-    public static Result Verify(UpdateUserCommand request, out Email? email, out FirstName? firstName, out LastName? lastName)
+    static Result Verify(
+            UpdateUserCommand request,
+            out Email? email,
+            out FirstName? firstName,
+            out LastName? lastName)
     {
         email = null; firstName = null; lastName = null;
 

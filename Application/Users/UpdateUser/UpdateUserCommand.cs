@@ -8,5 +8,4 @@ public sealed record UpdateUserCommand(
                         string FirstName,
                         string LastName,
                         string Email,
-                        UserType UserType,
                         DateTime DateOfBirth) : ICommand;

@@ -11,8 +11,7 @@ public sealed class UserRepository : IUserRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
-    public UserRepository(ApplicationDbContext dbContext)
-        => _dbContext = ThrowIfNull(dbContext);
+    public UserRepository(ApplicationDbContext dbContext) => _dbContext = ThrowIfNull(dbContext);
 
     public async Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default)
         => await _dbContext.Set<User>().FindAsync(new object?[] { id }, cancellationToken);

@@ -20,7 +20,8 @@ namespace Infrastructure.Middlewares
             {
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response.WriteAsJsonAsync(DomainErrors.GlobalErrors.MiddlewareErrorHandler(ex.Message));
+                await context.Response
+                    .WriteAsJsonAsync(DomainErrors.GlobalErrors.MiddlewareErrorHandler(ex.Message));
             }
         }
     }

@@ -1,12 +1,10 @@
 ﻿using Application.Abstractions.Messaging;
-using Domain.Enums;
 
-namespace Application.Users.CreateUser;
+namespace Application.Users.Register;
 
-public sealed record CreateUserCommand(
+public sealed record RegisterCommand(
                         string FirstName,
                         string LastName,
                         string Email,
                         string Password,
-                        UserType UserType,
                         DateTime DateOfBirth) : ICommand<Guid>;

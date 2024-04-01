@@ -1,6 +1,7 @@
 ﻿using Application.Users.CreateUser;
 using Application.Users.GetUserById;
 using Application.Users.Login;
+using Application.Users.Register;
 using Application.Users.UpdateUser;
 using Domain.Shared;
 using Mapster;
@@ -62,5 +63,17 @@ public sealed class UserController : ApiController
         var result = await Sender.Send(command, cancellationToken);
 
         return result.MapActionResult(Ok, NotFound);
+    }
+
+    [HttpPost("Register")]
+    public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request, CancellationToken cancellationToken)
+    {
+        var command = request.Adapt<RegisterCommand>();
+
+        var result = await Sender.Send(command, cancellationToken);
+
+        return result.MapActionResult(
+            onSuccess: value => Ok(value),
+            onFailure: BadRequest);
     }
 }
