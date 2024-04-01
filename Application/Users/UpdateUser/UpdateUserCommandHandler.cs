@@ -19,7 +19,6 @@ public sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand
     {
         var result = Verify(
             request,
-            out Email? email,
             out FirstName? firstName,
             out LastName? lastName);
 
@@ -34,7 +33,7 @@ public sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand
             return Result.Failure(DomainErrors.User.UserWithIdNotFound(request.Id));
         }
 
-        user.Update(firstName!, lastName!, email! ,request.DateOfBirth);
+        user.Update(firstName!, lastName!, request.DateOfBirth);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Result.Success();
@@ -42,18 +41,10 @@ public sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand
 
     static Result Verify(
             UpdateUserCommand request,
-            out Email? email,
             out FirstName? firstName,
             out LastName? lastName)
     {
-        email = null; firstName = null; lastName = null;
-
-        var emailResult = Email.Create(request.Email);
-        if (emailResult.IsFailure)
-        {
-            return Result.Failure(emailResult.Error);
-        }
-        email = emailResult.Value;
+        firstName = null; lastName = null;
 
         var firstNameResult = FirstName.Create(request.FirstName);
         if (firstNameResult.IsFailure)
