@@ -2,16 +2,21 @@
 
 namespace Infrastructure.Specifications;
 
-internal class SpecificationOrdering<TEntity>
+internal sealed class SpecificationOrdering<TEntity>
 {
-    public List<Expression<Func<TEntity, object>>> Ordering { get; } = new();
+    private readonly List<Expression<Func<TEntity, object>>> _ordering = new();
+    public IReadOnlyList<Expression<Func<TEntity, object>>> Ordering => _ordering;
+    public bool IsAsc { get; private init; } = true;
 
-    public SpecificationOrdering(Expression<Func<TEntity, object>> orderFunction)
-        => Ordering.Add(orderFunction);
+    public SpecificationOrdering(Expression<Func<TEntity, object>> orderFunction, bool isAsc = true)
+    {
+        _ordering.Add(orderFunction);
+        IsAsc = isAsc;
+    }
 
     public SpecificationOrdering<TEntity> ThenBy(Expression<Func<TEntity, object>> orderFunction)
     {
-        Ordering.Add(orderFunction);
+        _ordering.Add(orderFunction);
         return this;
     }
 }
