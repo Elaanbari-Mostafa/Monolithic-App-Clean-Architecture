@@ -1,4 +1,5 @@
 ﻿using Application.Users.CreateUser;
+using Application.Users.DeleteUserById;
 using Application.Users.GetUserById;
 using Application.Users.Login;
 using Application.Users.Register;
@@ -75,5 +76,16 @@ public sealed class UserController : ApiController
         return result.MapActionResult(
             onSuccess: value => Ok(value),
             onFailure: BadRequest);
+    }
+
+    [Authorize]
+    [HttpDelete("{id:Guid}")]
+    public async Task<IActionResult> DeleteUserByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var command = new DeleteUserByIdCommand(id);
+
+        var result = await Sender.Send(command, cancellationToken);
+
+        return result.MapActionResult(Ok, BadRequest);
     }
 }

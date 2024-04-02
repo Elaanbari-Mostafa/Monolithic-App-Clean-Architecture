@@ -6,7 +6,7 @@ public static class DomainErrors
 {
     public static class GlobalErrors
     {
-        public static Func<string, Error> MiddlewareErrorHandler => message => new("GlobalErrors.MiddlewareErrorHandler", message);
+        public static Func<Exception, Error> MiddlewareErrorHandler => ex => new("GlobalErrors.MiddlewareErrorHandler", ex.Message);
     }
 
     public static class ValueObject

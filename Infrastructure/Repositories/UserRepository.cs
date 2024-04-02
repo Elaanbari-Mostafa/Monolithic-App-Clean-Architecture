@@ -20,6 +20,8 @@ public sealed class UserRepository : IUserRepository
 
     public void UpdateUser(User user) => _dbContext.Set<User>().Update(user);
 
+    public void DeleteUser(User user) => _dbContext.Set<User>().Remove(user);
+
     public async Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default)
         => await _dbContext.Set<User>()
                      .AsNoTracking()

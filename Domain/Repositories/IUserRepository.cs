@@ -10,7 +10,7 @@ public interface IUserRepository
     /// </summary>
     /// <param name="Id"></param>
     /// <returns>User instance</returns>
-    Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<User?> GetUserByIdAsync(Guid id, CancellationToken cancellationToken = default);
     /// <summary>
     /// Add user
     /// </summary>
@@ -22,15 +22,20 @@ public interface IUserRepository
     /// <param name="user"></param>
     void UpdateUser(User user);
     /// <summary>
+    /// delete user from db
+    /// </summary>
+    /// <param name="user"></param>
+    void DeleteUser(User user);
+    /// <summary>
     /// is email is unique
     /// </summary>
     /// <param name="email"></param>
     /// <returns>bool</returns>
-    Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken);
+    Task<bool> IsEmailUniqueAsync(Email email, CancellationToken cancellationToken = default);
     /// <summary>
     /// get user by email
     /// </summary>
     /// <param name="email"></param>
     /// <returns>user</returns>
-    Task<User?> GetUserByEmailAsync(Email email, CancellationToken cancellationToken);
+    Task<User?> GetUserByEmailAsync(Email email, CancellationToken cancellationToken = default);
 }

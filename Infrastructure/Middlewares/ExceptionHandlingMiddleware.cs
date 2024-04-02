@@ -1,5 +1,4 @@
-﻿using Domain.Errors;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using static Domain.Exceptions.CustomArgumentNullException;
 
 namespace Infrastructure.Middlewares
@@ -20,8 +19,13 @@ namespace Infrastructure.Middlewares
             {
                 context.Response.ContentType = "application/json";
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response
-                    .WriteAsJsonAsync(DomainErrors.GlobalErrors.MiddlewareErrorHandler(ex.Message));
+                var response = new
+                {
+                    status = 500,
+                    message = ex.Message,
+                    details = ex.InnerException?.Message,
+                };
+                await context.Response.WriteAsJsonAsync(response);
             }
         }
     }
