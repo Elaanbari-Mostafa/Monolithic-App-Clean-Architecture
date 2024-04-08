@@ -1,5 +1,4 @@
-﻿using Domain.Enums;
-using Domain.Errors;
+﻿using Domain.Errors;
 using Domain.Primitives;
 using Domain.Shared;
 using Domain.ValueObjects;
@@ -12,16 +11,38 @@ public sealed class User : Entity, IAuditableEntity
     public LastName LastName { get; private set; }
     public Email Email { get; private set; }
     public Password Password { get; private set; }
-    public UserType UserType { get; private set; }
+    public ICollection<RoleUser> RoleUsers { get; private set; }
     public DateTime DateOfBirth { get; private set; }
     public DateTime CreatedOnUtc { get; set; }
     public DateTime? ModifiedOnUtc { get; set; }
 
-    private User(Guid id, FirstName firstName, LastName lastName, Email email, Password password, UserType userType, DateTime dateOfBirth) : base(id)
-        => (FirstName, LastName, Email, Password, UserType, DateOfBirth) = (firstName, lastName, email, password, userType, dateOfBirth);
+    private User(
+        Guid id,
+        FirstName firstName,
+        LastName lastName,
+        Email email,
+        Password password,
+        DateTime dateOfBirth) : base(id)
+            => (FirstName, LastName, Email, Password, DateOfBirth, RoleUsers)
+             = (firstName, lastName, email, password, dateOfBirth, new List<RoleUser>());
 
-    public static User Create(FirstName firstName, LastName lastName, Email email, Password password, UserType userType, DateTime dateOfBirth)
-        => new(Guid.NewGuid(), firstName, lastName, email, password, userType, dateOfBirth);
+    public static User Create(
+        FirstName firstName,
+        LastName lastName,
+        Email email,
+        Password password,
+        DateTime dateOfBirth)
+            => new(Guid.NewGuid(), firstName, lastName, email, password, dateOfBirth);
+
+    public User WithRole(ICollection<Role> Roles)
+    {
+        foreach (var role in Roles)
+        {
+            RoleUsers!.Add(new RoleUser() { RoleId = role.Id, UserId = Id});
+        }
+
+        return this;
+    }
 
     public void ChangeName(FirstName firstName, LastName lastName)
     {

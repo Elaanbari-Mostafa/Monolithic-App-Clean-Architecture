@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using static Domain.Exceptions.CustomArgumentNullException;
 
 namespace Infrastructure.Data;
 

@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions.Messaging;
-using Domain.Enums;
 
 namespace Application.Users.CreateUser;
 
@@ -8,5 +7,5 @@ public sealed record CreateUserCommand(
                         string LastName,
                         string Email,
                         string Password,
-                        UserType UserType,
+                        HashSet<int> RolesId,
                         DateTime DateOfBirth) : ICommand<Guid>;

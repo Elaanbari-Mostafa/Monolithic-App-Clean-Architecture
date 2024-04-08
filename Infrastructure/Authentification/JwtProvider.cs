@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Domain.Entities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,8 +13,10 @@ namespace Infrastructure.Authentification;
 public sealed class JwtProvider : IJwtProvider
 {
     private readonly JwtOptions _options;
+    private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public JwtProvider(IOptions<JwtOptions> options) => _options = ThrowIfNull(options.Value);
+    public JwtProvider(IOptions<JwtOptions> options, IServiceScopeFactory serviceScopeFactory) 
+        => (_options, _serviceScopeFactory) = (ThrowIfNull(options.Value),serviceScopeFactory);
 
     public string Generate(User user)
     {
@@ -22,9 +25,9 @@ public sealed class JwtProvider : IJwtProvider
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
         };
-
+        
         //Add permissions 
-
+        
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_options.SecretKey)),
