@@ -57,4 +57,9 @@ public static class DomainErrors
 
         public static readonly Error InvalidCredentials = new("User.InvalidCredentials", "The provided credentials are invalid");
     }
+
+    public static class Role
+    {
+        public static readonly Error RoleNotFound = new("Role.RoleNotFound", "This Role is not found");
+    }
 }

@@ -4,6 +4,7 @@ using Application.Users.GetUserById;
 using Application.Users.Login;
 using Application.Users.Register;
 using Application.Users.UpdateUser;
+using Domain.Enums;
 using Domain.Shared;
 using Mapster;
 using MediatR;
