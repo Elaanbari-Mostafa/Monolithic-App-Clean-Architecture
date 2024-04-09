@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240405135226_add_role_user")]
-    partial class add_role_user
+    [Migration("20240409133202_drop_user_table")]
+    partial class drop_user_table
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -110,7 +110,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("RolesPermissions", (string)null);
+                    b.ToTable("RolePermission", (string)null);
 
                     b.HasData(
                         new
@@ -137,17 +137,17 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.RoleUser", b =>
                 {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("RoleId", "UserId");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId", "RoleId");
 
-                    b.ToTable("RolesUsers", (string)null);
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleUser", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -209,17 +209,31 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.RoleUser", b =>
                 {
-                    b.HasOne("Domain.Entities.Role", null)
-                        .WithMany()
+                    b.HasOne("Domain.Entities.Role", "Role")
+                        .WithMany("RoleUsers")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.User", null)
-                        .WithMany()
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("RoleUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Role", b =>
+                {
+                    b.Navigation("RoleUsers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("RoleUsers");
                 });
 #pragma warning restore 612, 618
         }

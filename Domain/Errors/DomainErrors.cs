@@ -64,9 +64,4 @@ public static class DomainErrors
     {
         public static readonly Error RoleNotFound = new("Role.RoleNotFound", "This Role is not found");
     }
-
-    public static class Role
-    {
-        public static readonly Error RoleNotFound = new("Role.RoleNotFound", "This Role is not found");
-    }
 }

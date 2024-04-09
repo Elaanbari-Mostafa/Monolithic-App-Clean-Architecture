@@ -12,10 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240408143135_set user role one to many")]
-#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
-    partial class setuserroleonetomany
-#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+    [Migration("20240409132729_update_user_role_permission")]
+    partial class update_user_role_permission
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,7 +110,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("RolesPermissions", (string)null);
+                    b.ToTable("RolePermission", (string)null);
 
                     b.HasData(
                         new
@@ -135,6 +133,21 @@ namespace Infrastructure.Migrations
                             RoleId = 2,
                             PermissionId = 3
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.RoleUser", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RoleUser", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -171,15 +184,10 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -199,20 +207,33 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
+            modelBuilder.Entity("Domain.Entities.RoleUser", b =>
                 {
                     b.HasOne("Domain.Entities.Role", "Role")
-                        .WithMany("Users")
+                        .WithMany("RoleUsers")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain.Entities.User", "User")
+                        .WithMany("RoleUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("RoleUsers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("RoleUsers");
                 });
 #pragma warning restore 612, 618
         }

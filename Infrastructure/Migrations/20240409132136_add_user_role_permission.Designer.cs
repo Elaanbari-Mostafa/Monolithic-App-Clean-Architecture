@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240409100806_add_RoleUser_join")]
-    partial class add_RoleUser_join
+    [Migration("20240409132136_add_user_role_permission")]
+    partial class add_user_role_permission
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,7 +76,12 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Roles", (string)null);
 
@@ -192,6 +197,13 @@ namespace Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Role", b =>
+                {
+                    b.HasOne("Domain.Entities.User", null)
+                        .WithMany("Roles")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("Domain.Entities.RolePermission", b =>
                 {
                     b.HasOne("Domain.Entities.Permission", null)
@@ -209,17 +221,21 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.RoleUser", b =>
                 {
-                    b.HasOne("Domain.Entities.Role", null)
+                    b.HasOne("Domain.Entities.Role", "Role")
                         .WithMany("RoleUsers")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.User", null)
+                    b.HasOne("Domain.Entities.User", "User")
                         .WithMany("RoleUsers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
@@ -230,6 +246,8 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.Navigation("RoleUsers");
+
+                    b.Navigation("Roles");
                 });
 #pragma warning restore 612, 618
         }

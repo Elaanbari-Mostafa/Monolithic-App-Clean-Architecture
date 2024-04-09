@@ -8,33 +8,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class add_role_permission_update_user_schema : Migration
+    public partial class add_user_role_permission : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_User",
-                table: "User");
-
-            migrationBuilder.DropColumn(
-                name: "UserType",
-                table: "User");
-
-            migrationBuilder.RenameTable(
-                name: "User",
-                newName: "Users");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_User_Email",
-                table: "Users",
-                newName: "IX_Users_Email");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_Users",
-                table: "Users",
-                column: "Id");
-
             migrationBuilder.CreateTable(
                 name: "Permissions",
                 columns: table => new
@@ -49,20 +27,44 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfBirth = table.Column<DateTime>(type: "date", nullable: false),
+                    CreatedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedOnUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Roles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "RolesPermissions",
+                name: "RolePermission",
                 columns: table => new
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false),
@@ -70,15 +72,15 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RolesPermissions", x => new { x.RoleId, x.PermissionId });
+                    table.PrimaryKey("PK_RolePermission", x => new { x.RoleId, x.PermissionId });
                     table.ForeignKey(
-                        name: "FK_RolesPermissions_Permissions_PermissionId",
+                        name: "FK_RolePermission_Permissions_PermissionId",
                         column: x => x.PermissionId,
                         principalTable: "Permissions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RolesPermissions_Roles_RoleId",
+                        name: "FK_RolePermission_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id",
@@ -90,11 +92,11 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     RoleId = table.Column<int>(type: "int", nullable: false),
-                    UsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleUser", x => new { x.RoleId, x.UsersId });
+                    table.PrimaryKey("PK_RoleUser", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
                         name: "FK_RoleUser_Roles_RoleId",
                         column: x => x.RoleId,
@@ -102,8 +104,8 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RoleUser_Users_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_RoleUser_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -122,16 +124,16 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "Id", "Name" },
+                columns: new[] { "Id", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, "Customer" },
-                    { 2, "Admin" },
-                    { 3, "SuperAdmin" }
+                    { 1, "Customer", null },
+                    { 2, "Admin", null },
+                    { 3, "SuperAdmin", null }
                 });
 
             migrationBuilder.InsertData(
-                table: "RolesPermissions",
+                table: "RolePermission",
                 columns: new[] { "PermissionId", "RoleId" },
                 values: new object[,]
                 {
@@ -142,21 +144,32 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RolesPermissions_PermissionId",
-                table: "RolesPermissions",
+                name: "IX_RolePermission_PermissionId",
+                table: "RolePermission",
                 column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleUser_UsersId",
+                name: "IX_Roles_UserId",
+                table: "Roles",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleUser_RoleId",
                 table: "RoleUser",
-                column: "UsersId");
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RolesPermissions");
+                name: "RolePermission");
 
             migrationBuilder.DropTable(
                 name: "RoleUser");
@@ -167,30 +180,8 @@ namespace Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "Roles");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_Users",
-                table: "Users");
-
-            migrationBuilder.RenameTable(
-                name: "Users",
-                newName: "User");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Users_Email",
-                table: "User",
-                newName: "IX_User_Email");
-
-            migrationBuilder.AddColumn<int>(
-                name: "UserType",
-                table: "User",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_User",
-                table: "User",
-                column: "Id");
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
