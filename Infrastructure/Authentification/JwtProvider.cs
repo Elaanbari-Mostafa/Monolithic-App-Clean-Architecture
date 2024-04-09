@@ -15,19 +15,25 @@ public sealed class JwtProvider : IJwtProvider
     private readonly JwtOptions _options;
     private readonly IServiceScopeFactory _serviceScopeFactory;
 
-    public JwtProvider(IOptions<JwtOptions> options, IServiceScopeFactory serviceScopeFactory) 
-        => (_options, _serviceScopeFactory) = (ThrowIfNull(options.Value),serviceScopeFactory);
+    public JwtProvider(IOptions<JwtOptions> options, IServiceScopeFactory serviceScopeFactory)
+        => (_options, _serviceScopeFactory) = (ThrowIfNull(options.Value), serviceScopeFactory);
 
-    public string Generate(User user)
+    public async Task<string> Generate(User user)
     {
         List<Claim> claims = new()
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email.Value),
         };
-        
-        //Add permissions 
-        
+
+        IServiceScope scope = _serviceScopeFactory.CreateScope();
+        IPermissionService permissionService = scope.ServiceProvider.GetRequiredService<IPermissionService>();
+        HashSet<string> permissions = await permissionService.GetPermissionsFromUserIdAsync(user.Id);
+        foreach (var permission in permissions)
+        {
+            claims.Add(new(CustomClaims.Permissions, permission));
+        }
+
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_options.SecretKey)),

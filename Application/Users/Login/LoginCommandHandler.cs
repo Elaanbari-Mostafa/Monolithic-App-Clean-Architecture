@@ -36,7 +36,7 @@ public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, LoginRes
             return Result.Failure<LoginResponse>(DomainErrors.User.InvalidCredentials);
         }
 
-        var token = _jwtProvider.Generate(user);
+        var token = await _jwtProvider.Generate(user);
         var loginResponse = new LoginResponse(token);
 
         return loginResponse;
