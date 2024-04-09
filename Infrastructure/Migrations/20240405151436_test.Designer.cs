@@ -13,7 +13,11 @@ namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20240405151436_test")]
+<<<<<<< HEAD
     partial class Test
+=======
+    partial class test
+>>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

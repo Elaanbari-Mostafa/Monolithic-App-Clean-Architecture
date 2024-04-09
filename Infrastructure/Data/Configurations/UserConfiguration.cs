@@ -36,7 +36,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .IsUnique();
 
         builder.HasMany(x => x.RoleUsers)
-            .WithOne()
+            .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId);
     }
 }

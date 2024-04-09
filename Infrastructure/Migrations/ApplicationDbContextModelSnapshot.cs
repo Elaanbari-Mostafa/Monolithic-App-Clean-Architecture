@@ -107,7 +107,11 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PermissionId");
 
+<<<<<<< HEAD
                     b.ToTable("RolePermission", (string)null);
+=======
+                    b.ToTable("RolesPermissions", (string)null);
+>>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
 
                     b.HasData(
                         new
@@ -134,6 +138,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.RoleUser", b =>
                 {
+<<<<<<< HEAD
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -145,6 +150,19 @@ namespace Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RoleUser", (string)null);
+=======
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RoleId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RolesUsers", (string)null);
+>>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -207,13 +225,21 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.RoleUser", b =>
                 {
                     b.HasOne("Domain.Entities.Role", null)
+<<<<<<< HEAD
                         .WithMany("RoleUsers")
+=======
+                        .WithMany("Users")
+>>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.User", null)
+<<<<<<< HEAD
                         .WithMany("RoleUsers")
+=======
+                        .WithMany("Roles")
+>>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -221,12 +247,20 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Role", b =>
                 {
+<<<<<<< HEAD
                     b.Navigation("RoleUsers");
+=======
+                    b.Navigation("Users");
+>>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+<<<<<<< HEAD
                     b.Navigation("RoleUsers");
+=======
+                    b.Navigation("Roles");
+>>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
                 });
 #pragma warning restore 612, 618
         }

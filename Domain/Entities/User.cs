@@ -7,6 +7,7 @@ namespace Domain.Entities;
 
 public sealed class User : Entity, IAuditableEntity
 {
+    public ICollection<Role> Roles { get; private set; }
     public FirstName FirstName { get; private set; }
     public LastName LastName { get; private set; }
     public Email Email { get; private set; }
@@ -57,6 +58,15 @@ public sealed class User : Entity, IAuditableEntity
 
     public void Update(FirstName firstName, LastName lastName, DateTime dateOfBirth)
         => (FirstName, LastName, DateOfBirth) = (firstName, lastName, dateOfBirth);
+
+    public void AddRoles(HashSet<Role> roles)
+    {
+        if (roles is null)
+        {
+            throw new ArgumentNullException(nameof(roles));
+        }
+        ((List<Role>)Roles).AddRange(roles);
+    }
 
     public Result<Password> ChangePassword(string newPassword)
     {

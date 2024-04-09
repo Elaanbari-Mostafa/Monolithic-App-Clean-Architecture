@@ -12,6 +12,6 @@ public sealed class Role : Enumeration<Role>
     {
     }
 
-    public ICollection<RoleUser> RoleUsers { get; set; }
+    public ICollection<RoleUser>? RoleUsers { get; set; }
     public ICollection<Permission> Permissions { get; set; }
 }
