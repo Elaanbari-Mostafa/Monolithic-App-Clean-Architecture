@@ -18,7 +18,7 @@ Welcome to our e-commerce platform repository! This project is dedicated to buil
 
 ## Technologies Used:
 
-- Backend Framework: .NET Core
+- Backend Framework: .NET Core 7 (Clean architecture, DDD, MediatR, CQRS)
 - Database: SQL Server
 - ORM: Entity Framework Core
 
