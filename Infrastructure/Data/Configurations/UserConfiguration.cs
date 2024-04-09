@@ -10,7 +10,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.ToTable(TableNames.User);
+        builder.ToTable(TableNames.Users);
 
         builder.HasKey(u => u.Id);
 
@@ -29,8 +29,14 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .HasConversion(u => u.Value, u => Email.Create(u).Value)
             .HasMaxLength(Email.MaxLength);
 
-        builder.Property(u => u.DateOfBirth).HasColumnType(DbDataTypes.SqlServer.Date);
+        builder.Property(u => u.DateOfBirth)
+            .HasColumnType(DbDataTypes.SqlServer.Date);
 
-        builder.HasIndex(x => x.Email).IsUnique();
+        builder.HasIndex(x => x.Email)
+            .IsUnique();
+
+        builder.HasMany(x => x.RoleUsers)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
     }
 }

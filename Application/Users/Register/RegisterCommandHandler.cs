@@ -1,10 +1,10 @@
 ﻿using Application.Abstractions.Messaging;
 using Application.Users.CreateUser;
+using Domain.Entities;
 using Domain.Repositories;
 using Domain.Shared;
 using Mapster;
 using static Domain.Exceptions.CustomArgumentNullException;
-using Domain.Enums;
 
 namespace Application.Users.Register;
 
@@ -20,8 +20,7 @@ public sealed class RegisterCommandHandler : ICommandHandler<RegisterCommand, Gu
     {
         var createUserCommandHandler = new CreateUserCommandHandler(_unitOfWork, _userRepository);
         var createUserCommand = request.Adapt<CreateUserCommand>()
-                    with
-        { UserType = UserType.Client };
+                    with        { RolesId = new() { Role.Customer.Id } };
 
         return await createUserCommandHandler.Handle(createUserCommand, cancellationToken);
     }

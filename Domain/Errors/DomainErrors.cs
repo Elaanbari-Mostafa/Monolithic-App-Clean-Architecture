@@ -56,5 +56,17 @@ public static class DomainErrors
         public static readonly Error EmailAlreadyInUse = new("User.EmailAlreadyInUse", "The specified email is already in use");
 
         public static readonly Error InvalidCredentials = new("User.InvalidCredentials", "The provided credentials are invalid");
+
+        public static readonly Func<int,Error> RoleNotFound = id => new("User.RoleNotFound", $"The role with this id = {id} is not found");
+    }
+
+    public static class Role
+    {
+        public static readonly Error RoleNotFound = new("Role.RoleNotFound", "This Role is not found");
+    }
+
+    public static class Role
+    {
+        public static readonly Error RoleNotFound = new("Role.RoleNotFound", "This Role is not found");
     }
 }

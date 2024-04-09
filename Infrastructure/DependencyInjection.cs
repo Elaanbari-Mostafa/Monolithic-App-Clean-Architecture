@@ -5,6 +5,8 @@ using Infrastructure.Data;
 using Infrastructure.Data.Configurations;
 using Infrastructure.Interceptors;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.ViewComponents;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +26,10 @@ public static class DependencyInjection
         service.AddScoped<IUserRepository, UserRepository>();
         service.AddScoped<IUnitOfWork, UnitOfWork>();
         service.AddSingleton<IJwtProvider, JwtProvider>();
+        service.AddAuthorization();
+        service.AddSingleton<IAuthorizationHandler,PermissionAutherizationHandler>();
+        service.AddScoped<IPermissionService,PermissionService>();
+        service.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
         return service;
     }

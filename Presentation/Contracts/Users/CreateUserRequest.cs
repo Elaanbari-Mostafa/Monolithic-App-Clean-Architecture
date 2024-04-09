@@ -7,5 +7,5 @@ public sealed record CreateUserRequest(
                         string LastName,
                         string Email,
                         string Password,
-                        UserType UserType,
+                        HashSet<int> RolesId,
                         DateTime DateOfBirth);

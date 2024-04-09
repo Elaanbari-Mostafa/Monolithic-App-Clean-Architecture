@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using static Domain.Exceptions.CustomArgumentNullException;
+using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Infrastructure.Middlewares;
 
@@ -12,12 +13,15 @@ public sealed class CustomUnauthorizedMiddleware
     public async Task InvokeAsync(HttpContext context)
     {
         await _next(context);
-        if (context.Response.StatusCode == StatusCodes.Status401Unauthorized)
+
+        int statutCode = context.Response.StatusCode;
+        if (statutCode == Status401Unauthorized ||
+            statutCode == Status403Forbidden)
         {
             // Customize the response for unauthorized requests
             context.Response.ContentType = "application/json";
             var response = new { 
-                status = 401, 
+                status = statutCode, 
                 message = "Unauthorized"
             };
             await context.Response.WriteAsJsonAsync(response);

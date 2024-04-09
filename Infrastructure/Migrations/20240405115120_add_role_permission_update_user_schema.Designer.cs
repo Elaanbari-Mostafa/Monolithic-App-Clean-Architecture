@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240405115120_add_role_permission_update_user_schema")]
+    partial class add_role_permission_update_user_schema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,11 +110,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PermissionId");
 
-<<<<<<< HEAD
-                    b.ToTable("RolePermission", (string)null);
-=======
                     b.ToTable("RolesPermissions", (string)null);
->>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
 
                     b.HasData(
                         new
@@ -134,35 +133,6 @@ namespace Infrastructure.Migrations
                             RoleId = 2,
                             PermissionId = 3
                         });
-                });
-
-            modelBuilder.Entity("Domain.Entities.RoleUser", b =>
-                {
-<<<<<<< HEAD
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleUser", (string)null);
-=======
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("RoleId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RolesUsers", (string)null);
->>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -207,6 +177,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RoleId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleUser");
+                });
+
             modelBuilder.Entity("Domain.Entities.RolePermission", b =>
                 {
                     b.HasOne("Domain.Entities.Permission", null)
@@ -222,45 +207,19 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.RoleUser", b =>
+            modelBuilder.Entity("RoleUser", b =>
                 {
                     b.HasOne("Domain.Entities.Role", null)
-<<<<<<< HEAD
-                        .WithMany("RoleUsers")
-=======
-                        .WithMany("Users")
->>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.User", null)
-<<<<<<< HEAD
-                        .WithMany("RoleUsers")
-=======
-                        .WithMany("Roles")
->>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
-                        .HasForeignKey("UserId")
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Role", b =>
-                {
-<<<<<<< HEAD
-                    b.Navigation("RoleUsers");
-=======
-                    b.Navigation("Users");
->>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
-                });
-
-            modelBuilder.Entity("Domain.Entities.User", b =>
-                {
-<<<<<<< HEAD
-                    b.Navigation("RoleUsers");
-=======
-                    b.Navigation("Roles");
->>>>>>> 7700019ea455f074e2f67a213a6f54aaca0aefa8
                 });
 #pragma warning restore 612, 618
         }

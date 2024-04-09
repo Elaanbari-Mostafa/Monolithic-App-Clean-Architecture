@@ -35,7 +35,13 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
             return Result.Failure<Guid>(DomainErrors.User.EmailAlreadyInUse);
         }
 
-        User user = User.Create(firstName!, lastName!, email!, password!, request.UserType, request.DateOfBirth);
+        User user = User.Create(
+                            firstName!,
+                            lastName!,
+                            email!,
+                            password!,
+                            request.DateOfBirth)
+                        .WithRole(Role.GetValuesFromIds(request.RolesId));
 
         _userRepository.AddUser(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -43,7 +49,13 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
         return user.Id;
     }
 
-    public static Result Verify(CreateUserCommand request, out Email? email, out FirstName? firstName, out LastName? lastName, out Password? password)
+    private static Result Verify(
+        CreateUserCommand request,
+        out Email? email,
+        out FirstName? firstName,
+        out LastName? lastName,
+        out Password? password
+        )
     {
         email = null; firstName = null; lastName = null; password = null;
 
