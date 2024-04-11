@@ -7,7 +7,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection service)
     {
-        TypeAdapterConfig.GlobalSettings.Scan(ApplicationAssemblyReference.Assembly); // Add Mapster
+        TypeAdapterConfig.GlobalSettings.Scan(ApplicationAssemblyReference.Assembly); // Add Mapster configuration
         service.AddMediatR(ctr => ctr.RegisterServicesFromAssembly(ApplicationAssemblyReference.Assembly));
         return service;
     }

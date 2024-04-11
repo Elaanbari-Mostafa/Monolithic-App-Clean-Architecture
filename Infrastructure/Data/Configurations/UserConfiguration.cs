@@ -30,7 +30,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(Email.MaxLength);
 
         builder.Property(u => u.DateOfBirth)
-            .HasColumnType(DbDataTypes.SqlServer.Date);
+            .HasColumnType(DbDataTypes.Date);
 
         builder.HasIndex(x => x.Email)
             .IsUnique();

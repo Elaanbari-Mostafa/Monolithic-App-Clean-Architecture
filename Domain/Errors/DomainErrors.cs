@@ -64,4 +64,10 @@ public static class DomainErrors
     {
         public static readonly Error RoleNotFound = new("Role.RoleNotFound", "This Role is not found");
     }
+
+    public static class Brand
+    {
+        public static readonly Func<Guid,Error> BrandNotFound = id => 
+            new("Brand.BrandNotFound", $"This Brand {id} is not found");
+    }
 }

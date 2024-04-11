@@ -6,7 +6,7 @@ namespace Application.Mappers;
 
 internal sealed class UserMapperConfig : IRegister
 {
-    void IRegister.Register(TypeAdapterConfig config)
+    public void Register(TypeAdapterConfig config)
          => config.NewConfig<User, GetUserByIdResponse>()
                 .Map(dest => dest.FirstName, src => src.FirstName.Value)
                 .Map(dest => dest.LastName, src => src.LastName.Value)

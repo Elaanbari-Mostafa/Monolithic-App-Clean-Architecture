@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Infrastructure.Interceptors;
 
-internal sealed class UpdateAuditableEntitiesInterceptor : SaveChangesInterceptor
+public sealed class UpdateAuditableEntitiesInterceptor : SaveChangesInterceptor, IDbInterceptor
 {
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
         DbContextEventData eventData,

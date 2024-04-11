@@ -38,5 +38,6 @@ public interface IUserRepository
     /// <param name="email"></param>
     /// <returns>user</returns>
     Task<User?> GetUserByEmailAsync(Email email, CancellationToken cancellationToken = default);
-    Task<IList<Role>> GetRole();
+
+    void AddProduct(Product product);
 }

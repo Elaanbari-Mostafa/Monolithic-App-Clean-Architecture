@@ -1,5 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.Abstractions.Messaging;
+using Domain.Entities;
 using Domain.Errors;
 using Domain.Repositories;
 using Domain.Shared;
@@ -35,7 +36,7 @@ public sealed class LoginCommandHandler : ICommandHandler<LoginCommand, LoginRes
         {
             return Result.Failure<LoginResponse>(DomainErrors.User.InvalidCredentials);
         }
-
+       
         var token = await _jwtProvider.Generate(user);
         var loginResponse = new LoginResponse(token);
 

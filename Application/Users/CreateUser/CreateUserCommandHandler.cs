@@ -40,8 +40,8 @@ public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand
                             lastName!,
                             email!,
                             password!,
-                            request.DateOfBirth)
-                        .WithRole(Role.GetValuesFromIds(request.RolesId));
+                            request.DateOfBirth,
+                            Role.GetValuesFromIds(request.RolesId));
 
         _userRepository.AddUser(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
