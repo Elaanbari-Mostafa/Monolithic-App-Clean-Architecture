@@ -2,6 +2,7 @@
 using Domain.Primitives;
 using Domain.Shared;
 using Domain.ValueObjects;
+using System.Data;
 
 namespace Domain.Entities;
 
@@ -11,7 +12,7 @@ public sealed class User : Entity, IAuditableEntity
     public LastName LastName { get; private set; }
     public Email Email { get; private set; }
     public Password Password { get; private set; }
-    public ICollection<RoleUser> RoleUsers { get; private set; }
+    public List<RoleUser> RoleUsers { get; private set; }
     public DateTime DateOfBirth { get; private set; }
     public DateTime CreatedOnUtc { get; set; }
     public DateTime? ModifiedOnUtc { get; set; }
@@ -31,17 +32,17 @@ public sealed class User : Entity, IAuditableEntity
         LastName lastName,
         Email email,
         Password password,
-        DateTime dateOfBirth)
-            => new(Guid.NewGuid(), firstName, lastName, email, password, dateOfBirth);
-
-    public User WithRole(ICollection<Role> Roles)
+        DateTime dateOfBirth,
+        ICollection<Role> roles)
     {
-        foreach (var role in Roles)
+        User newUser = new(Guid.NewGuid(), firstName, lastName, email, password, dateOfBirth);
+        if (roles.Any())
         {
-            RoleUsers!.Add(new RoleUser() { RoleId = role.Id, UserId = Id});
+            var userRoles = roles.Select(x => new RoleUser() { RoleId = x.Id, UserId = newUser.Id });
+            newUser.RoleUsers!.AddRange(userRoles);
         }
 
-        return this;
+        return newUser;
     }
 
     public void ChangeName(FirstName firstName, LastName lastName)
