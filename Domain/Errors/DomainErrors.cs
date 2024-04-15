@@ -57,7 +57,7 @@ public static class DomainErrors
 
         public static readonly Error InvalidCredentials = new("User.InvalidCredentials", "The provided credentials are invalid");
 
-        public static readonly Func<int,Error> RoleNotFound = id => new("User.RoleNotFound", $"The role with this id = {id} is not found");
+        public static readonly Func<int, Error> RoleNotFound = id => new("User.RoleNotFound", $"The role with this id = {id} is not found");
     }
 
     public static class Role
@@ -67,7 +67,34 @@ public static class DomainErrors
 
     public static class Brand
     {
-        public static readonly Func<Guid,Error> BrandNotFound = id => 
+        public static readonly Func<Guid, Error> BrandNotFound = id =>
             new("Brand.BrandNotFound", $"This Brand {id} is not found");
+    }
+
+    public static class Product
+    {
+        public static Func<IList<Guid>, Error> ProductIdsNotFound => ids => new(
+            "Product.ProductIdsNotFound",
+            $"Product(s) with ID(s) {string.Join(", ", ids)} not found.");
+    }
+
+    public static class Jwt
+    {
+        public static readonly Error TokenNotFoundInTheRequestHeaders = new(
+            "Jwt.TokenNotFoundInTheRequestHeaders",
+            "Authorization token not found in the request headers.");
+
+        public static readonly Func<string, Error> TokenNotFoundOrInvalide = fieldName => new(
+            "Jwt.TokenNotFoundOrInvalide",
+            $"'{fieldName}' claim not found in the token or invalid.");
+
+        public static readonly Func<string, Error> TypeOfTokenIsInvalide = fieldType => new(
+            "Jwt.TypeOfTokenIsInvalide",
+             $"'The type of {fieldType}' is invalid.");
+    }
+
+    public static class Order
+    {
+        public static Func<Guid,Error> OrderNotFound => id => new("Order.OrderNotFound", $"This Order '{id}' is not found");
     }
 }

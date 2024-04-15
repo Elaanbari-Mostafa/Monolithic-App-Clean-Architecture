@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using Domain;
+using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Application;

@@ -4,6 +4,7 @@ using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240415135359_add-order-lineitem")]
+    partial class addorderlineitem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,21 +131,6 @@ namespace Infrastructure.Migrations
                         {
                             Id = 4,
                             Name = "SelectUser"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "CreateOrder"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "UpdateOrder"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "DeleteOrder"
                         });
                 });
 
@@ -243,11 +231,6 @@ namespace Infrastructure.Migrations
                         },
                         new
                         {
-                            RoleId = 1,
-                            PermissionId = 5
-                        },
-                        new
-                        {
                             RoleId = 2,
                             PermissionId = 1
                         },
@@ -255,11 +238,6 @@ namespace Infrastructure.Migrations
                         {
                             RoleId = 2,
                             PermissionId = 3
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 5
                         });
                 });
 

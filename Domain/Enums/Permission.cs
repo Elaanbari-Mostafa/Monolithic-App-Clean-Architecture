@@ -6,4 +6,8 @@ public enum Permission
     UpdateUser = 2,
     DeleteUser = 3,
     SelectUser = 4,
+
+    CreateOrder = 5,
+    UpdateOrder = 6,
+    DeleteOrder = 7,
 }

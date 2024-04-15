@@ -5,16 +5,21 @@ namespace Domain.Entities;
 
 public sealed class LineItem : Entity, IAuditableEntity
 {
-    public Product Product { get; private set; }
-    public Order Order { get; private set; }
-    public Money Price { get; private set; }
+    public Guid ProductId { get; private set; }
+    public Guid OrderId { get; private set; }
+    public Money Money { get; private set; }
     public DateTime CreatedOnUtc { get; set; }
     public DateTime? ModifiedOnUtc { get; set; }
 
-    internal LineItem(Guid id, Product product, Order order, Money price) : base(id)
+    private LineItem(Guid id) : base(id)
     {
-        Product = product;
-        Order = order;
-        Price = price;
+
+    }
+
+    internal LineItem(Guid id, Guid productId, Guid orderId, Money money) : base(id)
+    {
+        ProductId = productId;
+        OrderId = orderId;
+        Money = money;
     }
 }

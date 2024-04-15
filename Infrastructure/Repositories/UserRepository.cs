@@ -31,9 +31,4 @@ public sealed class UserRepository : IUserRepository
         => await _dbContext.Set<User>()
                      .AsNoTracking()
                      .FirstOrDefaultAsync(u => u.Email.Equals(email), cancellationToken);
-
-    public void AddProduct(Product product)
-    {
-        _dbContext.Set<Product>().Add(product);
-    }
 }

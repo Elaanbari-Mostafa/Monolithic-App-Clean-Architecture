@@ -23,7 +23,13 @@ namespace Infrastructure.Middlewares
                 {
                     status = 500,
                     message = ex.Message,
-                    details = ex.InnerException?.Message,
+                    details = new
+                    {
+                        message = ex.InnerException?.Message,
+                        innerException_message = ex.InnerException?.InnerException?.InnerException?.Message,
+                        source = ex.InnerException?.Source,
+
+                    }
                 };
                 await context.Response.WriteAsJsonAsync(response);
             }

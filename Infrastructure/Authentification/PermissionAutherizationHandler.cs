@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Authentification;
 
 internal sealed class PermissionAutherizationHandler : AuthorizationHandler<PermissionRequirement>
 {
-    private readonly IServiceScopeFactory _serviceScopeFactory;
+    public PermissionAutherizationHandler()
+    {
 
-    public PermissionAutherizationHandler(IServiceScopeFactory serviceScopeFactory)
-        => _serviceScopeFactory = serviceScopeFactory;
+    }
 
     protected override Task HandleRequirementAsync(
         AuthorizationHandlerContext context,

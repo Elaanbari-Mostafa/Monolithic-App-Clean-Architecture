@@ -27,14 +27,16 @@ public static class DependencyInjection
         service.AddScoped<IUserRepository, UserRepository>();
         service.AddScoped<IProductRepository, ProductRepository>();
         service.AddScoped<IBrandRepository, BrandRepository>();
+        service.AddScoped<IOrderRepository, OrderRepository>();
         service.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        service.AddHttpContextAccessor();
         service.AddSingleton<IJwtProvider, JwtProvider>();
         service.AddAuthorization();
         service.AddSingleton<IAuthorizationHandler,PermissionAutherizationHandler>();
         service.AddScoped<IPermissionService,PermissionService>();
         service.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
-
+        
         return service;
     }
 

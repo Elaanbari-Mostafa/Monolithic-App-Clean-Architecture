@@ -1,5 +1,8 @@
 ﻿using Application.Abstractions;
 using Domain.Entities;
+using Domain.Errors;
+using Domain.Shared;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -14,9 +17,11 @@ public sealed class JwtProvider : IJwtProvider
 {
     private readonly JwtOptions _options;
     private readonly IServiceScopeFactory _serviceScopeFactory;
+    private const string Authorization = "Authorization";
+    private const string JwtAuthorizationBearerSplit = " ";
 
     public JwtProvider(IOptions<JwtOptions> options, IServiceScopeFactory serviceScopeFactory)
-        => (_options, _serviceScopeFactory) = (ThrowIfNull(options.Value), serviceScopeFactory);
+        => (_options, _serviceScopeFactory) = (ThrowIfNull(options.Value), ThrowIfNull(serviceScopeFactory));
 
     public async Task<string> Generate(User user)
     {
@@ -51,5 +56,32 @@ public sealed class JwtProvider : IJwtProvider
             .WriteToken(token);
 
         return tokenValue;
+    }
+
+    public Result<Guid> GetUserId()
+    {
+        IServiceScope scope = _serviceScopeFactory.CreateScope();
+        IHttpContextAccessor? httpContextAccessor = scope.ServiceProvider.GetService<IHttpContextAccessor>();
+
+        Result<string> token = httpContextAccessor?.HttpContext?.Request.Headers[Authorization]
+            .FirstOrDefault()?
+            .Split(JwtAuthorizationBearerSplit)
+            .Last();
+        if (token.IsFailure)
+        {
+            return Result.Failure<Guid>(DomainErrors.Jwt.TokenNotFoundInTheRequestHeaders);
+        }
+
+        var handler = new JwtSecurityTokenHandler();
+        var jsonToken = handler.ReadToken(token.Value) as JwtSecurityToken;
+
+        Result<Claim> userIdClaim = jsonToken?.Claims.FirstOrDefault(claim => claim.Type == JwtRegisteredClaimNames.Sub);
+        if (userIdClaim.IsFailure)
+        {
+            return Result.Failure<Guid>(DomainErrors.Jwt.TokenNotFoundOrInvalide(JwtRegisteredClaimNames.Sub));
+        }
+
+        return Guid.Parse(userIdClaim.Value.Value);
+
     }
 }
