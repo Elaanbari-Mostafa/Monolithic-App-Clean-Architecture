@@ -57,7 +57,7 @@ public static class DomainErrors
 
         public static readonly Error InvalidCredentials = new("User.InvalidCredentials", "The provided credentials are invalid");
 
-        public static readonly Func<int,Error> RoleNotFound = id => new("User.RoleNotFound", $"The role with this id = {id} is not found");
+        public static readonly Func<int, Error> RoleNotFound = id => new("User.RoleNotFound", $"The role with this id = {id} is not found");
     }
 
     public static class Role
@@ -67,7 +67,14 @@ public static class DomainErrors
 
     public static class Brand
     {
-        public static readonly Func<Guid,Error> BrandNotFound = id => 
+        public static readonly Func<Guid, Error> BrandNotFound = id =>
             new("Brand.BrandNotFound", $"This Brand {id} is not found");
+    }
+
+    public static class Product
+    {
+        public static Func<IList<Guid>, Error> ProductIdsNotFound => ids => new(
+            "Product.ProductIdsNotFound",
+            $"Product(s) with ID(s) {string.Join(", ", ids)} not found.");
     }
 }

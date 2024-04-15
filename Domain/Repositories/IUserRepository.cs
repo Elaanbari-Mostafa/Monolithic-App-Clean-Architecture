@@ -38,6 +38,4 @@ public interface IUserRepository
     /// <param name="email"></param>
     /// <returns>user</returns>
     Task<User?> GetUserByEmailAsync(Email email, CancellationToken cancellationToken = default);
-
-    void AddProduct(Product product);
 }

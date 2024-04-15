@@ -27,6 +27,7 @@ public static class DependencyInjection
         service.AddScoped<IUserRepository, UserRepository>();
         service.AddScoped<IProductRepository, ProductRepository>();
         service.AddScoped<IBrandRepository, BrandRepository>();
+        service.AddScoped<IOrderRepository, OrderRepository>();
         service.AddScoped<IUnitOfWork, UnitOfWork>();
 
         service.AddSingleton<IJwtProvider, JwtProvider>();
