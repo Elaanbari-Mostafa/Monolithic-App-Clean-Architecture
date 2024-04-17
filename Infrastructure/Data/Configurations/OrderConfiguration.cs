@@ -1,9 +1,4 @@
-﻿using Domain.Entities;
-using Infrastructure.Constants;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Infrastructure.Data.Configurations;
+﻿namespace Infrastructure.Data.Configurations;
 
 internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
 {

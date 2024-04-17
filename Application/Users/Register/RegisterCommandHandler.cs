@@ -1,11 +1,4 @@
-﻿using Application.Abstractions.Messaging;
-using Application.Users.CreateUser;
-using Domain.Entities;
-using Domain.Repositories;
-using Domain.Shared;
-using Domain.ValueObjects;
-using Mapster;
-using static Domain.Exceptions.CustomArgumentNullException;
+﻿using Application.Users.CreateUser;
 
 namespace Application.Users.Register;
 

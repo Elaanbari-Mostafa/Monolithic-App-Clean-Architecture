@@ -1,11 +1,4 @@
-﻿using Application.Abstractions.Messaging;
-using Domain.Errors;
-using Domain.Repositories;
-using Domain.Shared;
-using Domain.ValueObjects;
-using static Domain.Exceptions.CustomArgumentNullException;
-
-namespace Application.Users.UpdateUser;
+﻿namespace Application.Users.UpdateUser;
 
 public sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
 {

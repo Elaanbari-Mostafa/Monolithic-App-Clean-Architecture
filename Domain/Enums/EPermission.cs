@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enums;
 
-public enum Permission
+public enum EPermission
 {
     CreateUser = 1,
     UpdateUser = 2,

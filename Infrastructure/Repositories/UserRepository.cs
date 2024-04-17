@@ -1,11 +1,4 @@
-﻿using Domain.Entities;
-using Domain.Repositories;
-using Domain.ValueObjects;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using static Domain.Exceptions.CustomArgumentNullException;
-
-namespace Infrastructure.Repositories;
+﻿namespace Infrastructure.Repositories;
 
 public sealed class UserRepository : IUserRepository
 {

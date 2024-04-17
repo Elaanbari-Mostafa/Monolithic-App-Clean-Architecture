@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using static Domain.Exceptions.CustomArgumentNullException;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace Infrastructure.Middlewares;

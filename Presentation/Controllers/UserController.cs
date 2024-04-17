@@ -4,15 +4,7 @@ using Application.Users.GetUserById;
 using Application.Users.Login;
 using Application.Users.Register;
 using Application.Users.UpdateUser;
-using Domain.Enums;
-using Domain.Shared;
-using Infrastructure.Authentification;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Presentation.Abstractions;
 using Presentation.Contracts.Users;
-using Presentation.Router;
 
 namespace Presentation.Controllers;
 
@@ -22,7 +14,7 @@ public sealed class UserController : ApiController
     {
     }
 
-    [HasPermission(Permission.CreateUser)]
+    [HasPermission(EPermission.CreateUser)]
     [HttpPost(Routers.User.Create)]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
@@ -35,7 +27,7 @@ public sealed class UserController : ApiController
             onFailure: BadRequest);
     }
 
-    [HasPermission(Permission.SelectUser)]
+    [HasPermission(EPermission.SelectUser)]
     [HttpGet(Routers.User.GetUserById)]
     public async Task<IActionResult> GetUserAsync(Guid id, CancellationToken cancellationToken)
     {
@@ -46,7 +38,7 @@ public sealed class UserController : ApiController
         return result.MapActionResult(Ok, BadRequest);
     }
 
-    [HasPermission(Permission.UpdateUser)]
+    [HasPermission(EPermission.UpdateUser)]
     [HttpPut(Routers.User.Update)]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
@@ -79,7 +71,7 @@ public sealed class UserController : ApiController
             onFailure: BadRequest);
     }
 
-    [HasPermission(Permission.DeleteUser)]
+    [HasPermission(EPermission.DeleteUser)]
     [HttpDelete(Routers.User.DeleteById)]
     public async Task<IActionResult> DeleteUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {

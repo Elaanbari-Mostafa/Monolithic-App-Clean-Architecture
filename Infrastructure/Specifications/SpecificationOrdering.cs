@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace Infrastructure.Specifications;
+﻿namespace Infrastructure.Specifications;
 
 internal sealed class SpecificationOrdering<TEntity>
 {

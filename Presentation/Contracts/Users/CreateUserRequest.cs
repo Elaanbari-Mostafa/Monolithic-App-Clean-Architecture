@@ -1,6 +1,4 @@
-﻿using Domain.Enums;
-
-namespace Presentation.Contracts.Users;
+﻿namespace Presentation.Contracts.Users;
 
 public sealed record CreateUserRequest(
                         string FirstName,

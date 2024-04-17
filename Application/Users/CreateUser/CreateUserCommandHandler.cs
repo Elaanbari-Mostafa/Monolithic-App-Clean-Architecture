@@ -1,12 +1,4 @@
-﻿using Application.Abstractions.Messaging;
-using Domain.Entities;
-using Domain.Errors;
-using Domain.Repositories;
-using Domain.Shared;
-using Domain.ValueObjects;
-using static Domain.Exceptions.CustomArgumentNullException;
-
-namespace Application.Users.CreateUser;
+﻿namespace Application.Users.CreateUser;
 
 public sealed class CreateUserCommandHandler : ICommandHandler<CreateUserCommand, Guid>
 {

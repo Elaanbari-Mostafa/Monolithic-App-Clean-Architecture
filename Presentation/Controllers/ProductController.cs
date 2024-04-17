@@ -1,11 +1,5 @@
 ﻿using Application.Products.CreateProduct;
-using Domain.Shared;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Presentation.Abstractions;
 using Presentation.Contracts.Products;
-using Presentation.Router;
 
 namespace Presentation.Controllers;
 

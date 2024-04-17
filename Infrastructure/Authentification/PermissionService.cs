@@ -1,9 +1,4 @@
-﻿using Domain.Entities;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using static Domain.Exceptions.CustomArgumentNullException;
-
-namespace Infrastructure.Authentification;
+﻿namespace Infrastructure.Authentification;
 
 internal sealed class PermissionService : IPermissionService
 {

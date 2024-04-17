@@ -2,7 +2,8 @@
 using Domain.Dtos.Products;
 using Domain.Primitives;
 using Domain.ValueObjects;
-using static Domain.Errors.DomainErrors;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace Domain.Entities;
 
@@ -15,11 +16,6 @@ public sealed class Order : Entity, IAuditableEntity
     public Money TotalPrice => CalculateTotalPrice();
     public DateTime CreatedOnUtc { get; set; }
     public DateTime? ModifiedOnUtc { get; set; }
-
-    private Order(Guid id) : base(id)
-    {
-
-    }
 
     private Order(Guid id, Guid userId) : base(id)
     {
@@ -40,22 +36,26 @@ public sealed class Order : Entity, IAuditableEntity
 
     public void AddMany(IList<ProductIdPriceDto> products)
     {
-        IEnumerable<LineItem> lineItems = products.Select(product => new LineItem(Guid.NewGuid(), product.Id, Id, product.Money));
+        IEnumerable<LineItem> lineItems = products
+            .Select(product => new LineItem(Guid.NewGuid(), product.Id, Id, product.Money));
         ((List<LineItem>)_lineItems).AddRange(lineItems);
     }
 
     private Money CalculateTotalPrice()
     {
-        return Money.Create(_lineItems.Sum(item => item.Money.Price), _lineItems.First().Money.Currency).Value;
+        return Money.Create(
+            _lineItems.Sum(item => item.Money.Price),
+            _lineItems.First().Money.Currency).Value;
     }
 
     public void UpdateMany(IList<LineItemDto> lineItemsDto)
     {
-        IList<LineItem> lineItems = lineItemsDto.Select(x => new LineItem(
-                x.Id,
-                x.ProductId,
-                Id,
-                Money.Create(x.Price, x.Currency).Value)).ToList();
+        var lineItems = from lineItem in lineItemsDto
+                        select new LineItem(
+                                lineItem.Id,
+                                lineItem.ProductId,
+                                Id,
+                                Money.Create(lineItem.Price, lineItem.Currency).Value);
 
         ((List<LineItem>)_lineItems).AddRange(lineItems);
     }

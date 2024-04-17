@@ -1,7 +1,4 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-
-namespace Presentation.Abstractions;
+﻿namespace Presentation.Abstractions;
 
 [ApiController]
 public abstract class ApiController : ControllerBase

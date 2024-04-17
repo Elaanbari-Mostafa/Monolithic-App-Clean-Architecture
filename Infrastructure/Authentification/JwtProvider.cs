@@ -1,15 +1,10 @@
-﻿using Application.Abstractions;
-using Domain.Entities;
-using Domain.Errors;
-using Domain.Shared;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using static Domain.Exceptions.CustomArgumentNullException;
 
 namespace Infrastructure.Authentification;
 

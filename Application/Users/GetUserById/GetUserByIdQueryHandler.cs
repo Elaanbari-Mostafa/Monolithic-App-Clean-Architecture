@@ -1,11 +1,4 @@
-﻿using Application.Abstractions.Messaging;
-using Domain.Errors;
-using Domain.Repositories;
-using Domain.Shared;
-using Mapster;
-using static Domain.Exceptions.CustomArgumentNullException;
-
-namespace Application.Users.GetUserById;
+﻿namespace Application.Users.GetUserById;
 
 public sealed class GetUserByIdQueryHandler : IQueryHandler<GetUserByIdQuery, GetUserByIdResponse>
 {

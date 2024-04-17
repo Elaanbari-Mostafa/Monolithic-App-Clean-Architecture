@@ -1,10 +1,5 @@
-﻿using Domain.Entities;
-using Domain.Repositories;
-using Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using static Domain.Exceptions.CustomArgumentNullException;
+﻿namespace Infrastructure.Repositories;
 
-namespace Infrastructure.Repositories;
 public sealed class OrderRepository : IOrderRepository
 {
     private readonly ApplicationDbContext _context;

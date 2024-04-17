@@ -1,7 +1,4 @@
-﻿using Domain.Primitives;
-using System.Linq.Expressions;
-
-namespace Infrastructure.Specifications;
+﻿namespace Infrastructure.Specifications;
 
 internal abstract class Specification<TEntity> where TEntity : Entity
 {

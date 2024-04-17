@@ -1,0 +1,14 @@
+﻿global using Domain.Entities;
+global using Domain.Repositories;
+global using Infrastructure.Data;
+global using Microsoft.EntityFrameworkCore;
+global using static Domain.Exceptions.CustomArgumentNullException;
+global using Domain.Shared;
+global using Domain.ValueObjects;
+global using Domain.Primitives;
+global using System.Linq.Expressions;
+global using Domain.Enums;
+global using Infrastructure.Constants;
+global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using Application.Abstractions;
+global using Domain.Errors;

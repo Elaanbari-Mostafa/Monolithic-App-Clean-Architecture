@@ -1,9 +1,11 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Enums;
+
+namespace Domain.Entities;
 
 public sealed class Permission
 {
     public static IEnumerable<Permission> GetValues()
-        => Enum.GetValues<Enums.Permission>()
+        => Enum.GetValues<EPermission>()
                .Select(p => new Permission
                {
                    Id = (int)p,

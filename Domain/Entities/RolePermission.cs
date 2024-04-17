@@ -3,30 +3,21 @@
 public sealed class RolePermission
 {
     public static IReadOnlyCollection<RolePermission> GetValues()
-    {
-        return new List<IList<RolePermission>>()
+        => new[]
         {
-              Create(Role.Customer,
-                          Enums.Permission.SelectUser,
-                          Enums.Permission.UpdateUser,
-                          Enums.Permission.CreateOrder),
+                Create(Role.Customer,Enums.EPermission.SelectUser),
+                Create(Role.Customer,Enums.EPermission.UpdateUser),                
 
-              Create(Role.Admin,
-                          Enums.Permission.CreateUser,
-                          Enums.Permission.DeleteUser,
-                          Enums.Permission.CreateOrder),
-        }
-        .Select(p => p)
-        .SelectMany(p => p)
-        .ToList();
-    }
+                Create(Role.Admin,Enums.EPermission.CreateUser),
+                Create(Role.Admin,Enums.EPermission.DeleteUser),
+        };
 
-    private static IList<RolePermission> Create(Role role, params Enums.Permission[] permission)
-        => permission.Select(p => new RolePermission()
+    private static RolePermission Create(Role role, Enums.EPermission permission)
+        => new()
         {
-            PermissionId = (int)p,
+            PermissionId = (int)permission,
             RoleId = role.Id,
-        }).ToList();
+        };
 
     public int RoleId { get; private set; }
     public int PermissionId { get; private set; }

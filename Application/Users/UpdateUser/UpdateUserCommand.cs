@@ -1,7 +1,4 @@
-﻿using Application.Abstractions.Messaging;
-using Domain.Enums;
-
-namespace Application.Users.UpdateUser;
+﻿namespace Application.Users.UpdateUser;
 
 public sealed record UpdateUserCommand(
                         Guid Id,

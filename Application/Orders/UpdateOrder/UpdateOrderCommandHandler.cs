@@ -1,14 +1,4 @@
-﻿using Application.Abstractions;
-using Application.Abstractions.Messaging;
-using Domain.Dtos.LineItems;
-using Domain.Entities;
-using Domain.Errors;
-using Domain.Repositories;
-using Domain.Shared;
-using Domain.ValueObjects;
-using Mapster;
-
-namespace Application.Orders.UpdateOrder;
+﻿namespace Application.Orders.UpdateOrder;
 
 public sealed class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderCommand>
 {
@@ -19,8 +9,8 @@ public sealed class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderComma
         IOrderRepository orderRepository,
         IUnitOfWork unitOfWork)
     {
-        _orderRepository = orderRepository;
-        _unitOfWork = unitOfWork;
+        _orderRepository = ThrowIfNull(orderRepository);
+        _unitOfWork = ThrowIfNull(unitOfWork);
     }
 
     public async Task<Result> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)

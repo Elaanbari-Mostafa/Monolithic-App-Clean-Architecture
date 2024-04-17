@@ -1,14 +1,6 @@
-﻿using Application.Orders.CreateOrder;
+﻿using Presentation.Contracts.Orders;
+using Application.Orders.CreateOrder;
 using Application.Orders.UpdateOrder;
-using Domain.Enums;
-using Domain.Shared;
-using Infrastructure.Authentification;
-using Mapster;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Presentation.Abstractions;
-using Presentation.Contracts.Orders;
-using Presentation.Router;
 
 namespace Presentation.Controllers;
 
@@ -18,7 +10,7 @@ public sealed class OrderController : ApiController
     {
     }
 
-    [HasPermission(Permission.CreateOrder)]
+    [HasPermission(EPermission.CreateOrder)]
     [HttpPost(Routers.Order.Create)]
     public async Task<IActionResult> CreateOrderAsync([FromBody] CreateOrderRequest request, CancellationToken cancellationToken)
     {

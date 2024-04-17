@@ -1,8 +1,5 @@
 ﻿using Infrastructure.Interceptors;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using static Domain.Exceptions.CustomArgumentNullException;
-
 namespace Infrastructure.Data;
 
 public sealed class ApplicationDbContext : DbContext

@@ -1,10 +1,4 @@
-﻿using Domain.Entities;
-using Domain.ValueObjects;
-using Infrastructure.Constants;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-namespace Infrastructure.Data.Configurations;
+﻿namespace Infrastructure.Data.Configurations;
 
 internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {
