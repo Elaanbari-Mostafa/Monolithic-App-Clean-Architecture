@@ -8,10 +8,10 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Abstractions;
 using Presentation.Contracts.Orders;
+using Presentation.Router;
 
 namespace Presentation.Controllers;
 
-[Route("api/[controller]")]
 public sealed class OrderController : ApiController
 {
     public OrderController(ISender sender) : base(sender)
@@ -19,7 +19,7 @@ public sealed class OrderController : ApiController
     }
 
     [HasPermission(Permission.CreateOrder)]
-    [HttpPost]
+    [HttpPost(Routers.Order.Create)]
     public async Task<IActionResult> CreateOrderAsync([FromBody] CreateOrderRequest request, CancellationToken cancellationToken)
     {
         var createOrderCommand = request.Adapt<CreateOrderCommand>();
@@ -32,7 +32,7 @@ public sealed class OrderController : ApiController
     }
 
     //[HasPermission(Permission.UpdateOrder)]
-    [HttpPut]
+    [HttpPut(Routers.Order.Update)]
     public async Task<IActionResult> UpdateOrderAsync([FromBody] UpdateOrderRequest request, CancellationToken cancellationToken)
     {
         var updateOrderCommand = request.Adapt<UpdateOrderCommand>();

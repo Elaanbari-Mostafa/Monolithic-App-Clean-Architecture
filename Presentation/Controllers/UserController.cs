@@ -9,14 +9,13 @@ using Domain.Shared;
 using Infrastructure.Authentification;
 using Mapster;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Abstractions;
 using Presentation.Contracts.Users;
+using Presentation.Router;
 
 namespace Presentation.Controllers;
 
-[Route("api/users")]
 public sealed class UserController : ApiController
 {
     public UserController(ISender sender) : base(sender)
@@ -24,7 +23,7 @@ public sealed class UserController : ApiController
     }
 
     [HasPermission(Permission.CreateUser)]
-    [HttpPost]
+    [HttpPost(Routers.User.Create)]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserRequest request, CancellationToken cancellationToken)
     {
         var command = request.Adapt<CreateUserCommand>();
@@ -37,7 +36,7 @@ public sealed class UserController : ApiController
     }
 
     [HasPermission(Permission.SelectUser)]
-    [HttpGet("{id:Guid}")]
+    [HttpGet(Routers.User.GetUserById)]
     public async Task<IActionResult> GetUserAsync(Guid id, CancellationToken cancellationToken)
     {
         var command = new GetUserByIdQuery(id);
@@ -48,7 +47,7 @@ public sealed class UserController : ApiController
     }
 
     [HasPermission(Permission.UpdateUser)]
-    [HttpPut]
+    [HttpPut(Routers.User.Update)]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserRequest request, CancellationToken cancellationToken)
     {
         var command = request.Adapt<UpdateUserCommand>();
@@ -58,7 +57,7 @@ public sealed class UserController : ApiController
         return result.MapActionResult(NoContent, NotFound);
     }
 
-    [HttpPost("Login")]
+    [HttpPost(Routers.User.Login)]
     public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request, CancellationToken cancellationToken)
     {
         var command = request.Adapt<LoginCommand>();
@@ -68,7 +67,7 @@ public sealed class UserController : ApiController
         return result.MapActionResult(Ok, NotFound);
     }
 
-    [HttpPost("Register")]
+    [HttpPost(Routers.User.Register)]
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
         var command = request.Adapt<RegisterCommand>();
@@ -81,7 +80,7 @@ public sealed class UserController : ApiController
     }
 
     [HasPermission(Permission.DeleteUser)]
-    [HttpDelete("{id:Guid}")]
+    [HttpDelete(Routers.User.DeleteById)]
     public async Task<IActionResult> DeleteUserByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var command = new DeleteUserByIdCommand(id);

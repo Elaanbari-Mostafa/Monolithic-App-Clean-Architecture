@@ -5,17 +5,17 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Abstractions;
 using Presentation.Contracts.Products;
+using Presentation.Router;
 
 namespace Presentation.Controllers;
 
-[Route("api/[controller]")]
 public sealed class ProductController : ApiController
 {
     public ProductController(ISender sender) : base(sender)
     {
     }
 
-    [HttpPost]
+    [HttpPost(Routers.Product.Create)]
     public async Task<IActionResult> CreateProductAsync(
        [FromBody] CreateProductRequest request,
         CancellationToken cancellationToken)
