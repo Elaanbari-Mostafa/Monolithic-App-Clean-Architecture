@@ -21,42 +21,14 @@ public sealed class Order : Entity, IAuditableEntity
 
     }
 
-    private Order(Guid id, Guid userId) : base(id)
+    public static Order Create(User user)
     {
-        UserId = userId;
-    }
-
-    public static Order Create(Guid userId)
-    {
-        Order order = new(Guid.NewGuid(), userId);
+        var order = new Order(Guid.NewGuid(), user);
         return order;
     }
 
-    public void Add(ProductIdPriceDto product)
+    public void AddItem(LineItem item)
     {
-        LineItem item = new(Guid.NewGuid(), product.Id, Id, product.Money);
         _lineItems.Add(item);
-    }
-
-    public void AddMany(IList<ProductIdPriceDto> products)
-    {
-        IEnumerable<LineItem> lineItems = products.Select(product => new LineItem(Guid.NewGuid(), product.Id, Id, product.Money));
-        ((List<LineItem>)_lineItems).AddRange(lineItems);
-    }
-
-    private Money CalculateTotalPrice()
-    {
-        return Money.Create(_lineItems.Sum(item => item.Money.Price), _lineItems.First().Money.Currency).Value;
-    }
-
-    public void UpdateMany(IList<LineItemDto> lineItemsDto)
-    {
-        IList<LineItem> lineItems = lineItemsDto.Select(x => new LineItem(
-                x.Id,
-                x.ProductId,
-                Id,
-                Money.Create(x.Price, x.Currency).Value)).ToList();
-
-        ((List<LineItem>)_lineItems).AddRange(lineItems);
     }
 }
