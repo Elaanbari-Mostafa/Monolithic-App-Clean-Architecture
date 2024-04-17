@@ -365,3 +365,4 @@ FodyWeavers.xsd
 Custom ignore
 appsettings.json
 /.editorconfig
+*.rar
