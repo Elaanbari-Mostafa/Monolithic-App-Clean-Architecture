@@ -334,7 +334,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.ValueObjects.Money", "Money", b1 =>
+                    b.OwnsOne("Domain.Entities.LineItem.Money#Domain.ValueObjects.Money", "Money", b1 =>
                         {
                             b1.Property<Guid>("LineItemId")
                                 .HasColumnType("uniqueidentifier");
@@ -348,7 +348,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("LineItemId");
 
-                            b1.ToTable("LineItems");
+                            b1.ToTable("LineItems", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("LineItemId");
@@ -377,7 +377,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.ValueObjects.Money", "Money", b1 =>
+                    b.OwnsOne("Domain.Entities.Product.Money#Domain.ValueObjects.Money", "Money", b1 =>
                         {
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("uniqueidentifier");
@@ -391,7 +391,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("ProductId");
 
-                            b1.ToTable("Products");
+                            b1.ToTable("Products", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ProductId");

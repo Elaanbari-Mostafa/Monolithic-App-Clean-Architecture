@@ -1,11 +1,4 @@
-﻿using Application.Abstractions.Messaging;
-using Domain.Entities;
-using Domain.Errors;
-using Domain.Repositories;
-using Domain.Shared;
-using static Domain.Exceptions.CustomArgumentNullException;
-
-namespace Application.Users.DeleteUserById;
+﻿namespace Application.Users.DeleteUserById;
 
 public sealed class DeleteUserByIdCommandHandler : ICommandHandler<DeleteUserByIdCommand>
 {

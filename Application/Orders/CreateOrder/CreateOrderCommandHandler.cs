@@ -1,10 +1,4 @@
-﻿using Application.Abstractions;
-using Application.Abstractions.Messaging;
-using Domain.Dtos.Products;
-using Domain.Entities;
-using Domain.Errors;
-using Domain.Repositories;
-using Domain.Shared;
+﻿using Domain.Dtos.Products;
 
 namespace Application.Orders.CreateOrder;
 
@@ -21,10 +15,10 @@ public sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderComma
         IProductRepository productRepository,
         IJwtProvider jwtProvider)
     {
-        _orderRepository = orderRepository;
-        _unitOfWork = unitOfWork;
-        _productRepository = productRepository;
-        _jwtProvider = jwtProvider;
+        _orderRepository = ThrowIfNull(orderRepository);
+        _unitOfWork =    ThrowIfNull(unitOfWork);
+        _productRepository = ThrowIfNull(productRepository);
+        _jwtProvider = ThrowIfNull(jwtProvider);
     }
 
     public async Task<Result<Guid>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -36,7 +30,7 @@ public sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderComma
         }
 
         IList<ProductIdPriceDto> products = await _productRepository.GetByIdsDtoAsync<ProductIdPriceDto>(request.ProductIds);
-        List<Guid> missingProductIds = request.ProductIds.Except(products.Select(x => x.Id)).ToList();
+        IList<Guid> missingProductIds = request.ProductIds.Except(products.Select(x => x.Id)).ToList();
         if (missingProductIds.Any())
         {
             return Result.Failure<Guid>(DomainErrors.Product.ProductIdsNotFound(missingProductIds));

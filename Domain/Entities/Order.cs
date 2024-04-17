@@ -2,7 +2,6 @@
 using Domain.Dtos.Products;
 using Domain.Primitives;
 using Domain.ValueObjects;
-using static Domain.Errors.DomainErrors;
 
 namespace Domain.Entities;
 
@@ -15,11 +14,6 @@ public sealed class Order : Entity, IAuditableEntity
     public Money TotalPrice => CalculateTotalPrice();
     public DateTime CreatedOnUtc { get; set; }
     public DateTime? ModifiedOnUtc { get; set; }
-
-    private Order(Guid id) : base(id)
-    {
-
-    }
 
     private Order(Guid id, Guid userId) : base(id)
     {

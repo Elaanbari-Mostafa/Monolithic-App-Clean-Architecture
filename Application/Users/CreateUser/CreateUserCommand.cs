@@ -1,6 +1,4 @@
-﻿using Application.Abstractions.Messaging;
-
-namespace Application.Users.CreateUser;
+﻿namespace Application.Users.CreateUser;
 
 public sealed record CreateUserCommand(
                         string FirstName,
