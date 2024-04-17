@@ -1,5 +1,7 @@
 # E-commerce Platform (Backend)
 
+![image](https://github.com/Elaanbari-Mostafa/Monolithic-App-Clean-Architecture/assets/96941991/2a36ee61-8107-49bc-84c9-4543b1256726)
+
 Welcome to our e-commerce platform repository! This project is dedicated to building a robust and scalable backend system for an online store using .NET Core and SQL Server.
 
 ## Features:
