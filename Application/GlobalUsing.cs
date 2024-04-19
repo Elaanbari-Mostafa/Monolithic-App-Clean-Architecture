@@ -7,3 +7,4 @@ global using Application.Abstractions;
 global using Application.Abstractions.Messaging;
 global using Domain.ValueObjects;
 global using Mapster;
+global using Domain.Enums;

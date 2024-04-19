@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Repositories;
+﻿using Domain.Dtos.Orders;
+
+namespace Infrastructure.Repositories;
 
 public sealed class OrderRepository : IOrderRepository
 {
@@ -9,7 +11,7 @@ public sealed class OrderRepository : IOrderRepository
 
     public void AddOrder(Order order)
     {
-        _context.Set<Order>().Add(order);   
+        _context.Set<Order>().Add(order);
     }
 
     public async Task<Order?> GetByIdAsync(Guid id)
@@ -21,5 +23,19 @@ public sealed class OrderRepository : IOrderRepository
     public void UpdateOrder(Order order)
     {
         _context.Set<Order>().Update(order);
+    }
+
+    public async Task<OrderWithPriceDto?> GetOrderWithTotalPrice(Guid id)
+    {
+        var order = await _context.Set<Order>()
+            .Where(o => o.Id == id)
+            .Select(o => new OrderWithPriceDto(
+                o,
+                Money.Create(
+                    o.LineItems.Sum(x => x.Money.Price),
+                    o.LineItems.First().Money.Currency).Value))
+            .FirstOrDefaultAsync();
+
+        return order;
     }
 }

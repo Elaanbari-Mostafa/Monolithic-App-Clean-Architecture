@@ -15,7 +15,9 @@ public sealed class ApplicationDbContext : DbContext
           = (ThrowIfNull(configuration), dbInterceptors);
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-        => modelBuilder.ApplyConfigurationsFromAssembly(InfrastructureAssemblyReference.Assembly);
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(InfrastructureAssemblyReference.Assembly);
+    } 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
          => optionsBuilder

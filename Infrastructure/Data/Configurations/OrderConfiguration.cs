@@ -1,4 +1,6 @@
-﻿namespace Infrastructure.Data.Configurations;
+﻿using Mapster.Utils;
+
+namespace Infrastructure.Data.Configurations;
 
 internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
@@ -10,6 +12,9 @@ internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.HasOne(o => o.User)
             .WithMany();
+
+        builder.Property(o => o.OrderStatus)
+            .HasConversion(s => s.ToString(), s => Enum.Parse<OrderStatus>(s));
 
         builder.HasMany(o => o.LineItems)
             .WithOne()

@@ -1,20 +1,4 @@
-﻿using Application.Abstractions;
-using Domain.Repositories;
-using Infrastructure.Authentification;
-using Infrastructure.Data;
-using Infrastructure.Data.Configurations;
-using Infrastructure.Interceptors;
-using Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.ViewComponents;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using System;
-using System.Reflection;
-
-namespace Infrastructure;
+﻿namespace Infrastructure;
 
 public static class DependencyInjection
 {
@@ -23,13 +7,7 @@ public static class DependencyInjection
     {
         service.AddDbContext<ApplicationDbContext>();
         service.RegisterAllTypes<IDbInterceptor>(ServiceLifetime.Singleton);
-
-        service.AddScoped<IUserRepository, UserRepository>();
-        service.AddScoped<IProductRepository, ProductRepository>();
-        service.AddScoped<IBrandRepository, BrandRepository>();
-        service.AddScoped<IOrderRepository, OrderRepository>();
-        service.AddScoped<IUnitOfWork, UnitOfWork>();
-
+        AddRepositorys(ref service);
         service.AddHttpContextAccessor();
         service.AddSingleton<IJwtProvider, JwtProvider>();
         service.AddAuthorization();
@@ -38,6 +16,16 @@ public static class DependencyInjection
         service.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
         
         return service;
+    }
+
+    private static void AddRepositorys(ref IServiceCollection service)
+    {
+        service.AddScoped<IUserRepository, UserRepository>();
+        service.AddScoped<IPaymentRepository, PaymentRepository>();
+        service.AddScoped<IProductRepository, ProductRepository>();
+        service.AddScoped<IBrandRepository, BrandRepository>();
+        service.AddScoped<IOrderRepository, OrderRepository>();
+        service.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
     public static void RegisterAllTypes<T>(this IServiceCollection services,

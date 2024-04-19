@@ -10,4 +10,6 @@ public enum EPermission
     CreateOrder = 5,
     UpdateOrder = 6,
     DeleteOrder = 7,
+
+    CreatePayment = 8,
 }

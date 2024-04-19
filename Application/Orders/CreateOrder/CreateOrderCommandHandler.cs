@@ -29,12 +29,22 @@ public sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderComma
             return Result.Failure<Guid>(userResult.Error);
         }
 
-        IList<ProductIdPriceDto> products = await _productRepository.GetByIdsDtoAsync<ProductIdPriceDto>(request.ProductIds);
-        IList<Guid> missingProductIds = request.ProductIds.Except(products.Select(x => x.Id)).ToList();
+        IEnumerable<ProductIdPriceDto> productIdPrice = await _productRepository
+            .GetByIdsDtoAsync<ProductIdPriceDto>(request.Products.Select(x => x.Id));
+        IEnumerable<Guid> missingProductIds = productIdPrice.Select(x => x.Id).Except(productIdPrice.Select(x => x.Id));
         if (missingProductIds.Any())
         {
             return Result.Failure<Guid>(DomainErrors.Product.ProductIdsNotFound(missingProductIds));
         }
+
+        var productQuantities = request.Products.ToDictionary(x => x.Id, x => x.Qty);
+
+        IEnumerable<ProductIdPriceDto> products = productIdPrice.Select(p => new ProductIdPriceDto()
+        {
+            Id = p.Id,
+            Money = p.Money,
+            Qty = productQuantities[p.Id],
+        });
 
         Order newOrder = Order.Create(userResult.Value);
         newOrder.AddMany(products);

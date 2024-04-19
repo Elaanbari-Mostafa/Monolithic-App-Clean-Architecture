@@ -1,5 +1,6 @@
 ﻿using Domain.Dtos.LineItems;
 using Domain.Dtos.Products;
+using Domain.Enums;
 using Domain.Primitives;
 using Domain.ValueObjects;
 
@@ -11,12 +12,14 @@ public sealed class Order : Entity, IAuditableEntity
     public IReadOnlyList<LineItem> LineItems => _lineItems.AsReadOnly();
     public User User { get; private set; }
     public Guid UserId { get; private set; }
+    public OrderStatus OrderStatus { get; private set; }
     public Money TotalPrice => CalculateTotalPrice();
     public DateTime CreatedOnUtc { get; set; }
     public DateTime? ModifiedOnUtc { get; set; }
 
     private Order(Guid id, Guid userId) : base(id)
     {
+        OrderStatus = OrderStatus.Pending;
         UserId = userId;
     }
 
@@ -28,14 +31,14 @@ public sealed class Order : Entity, IAuditableEntity
 
     public void Add(ProductIdPriceDto product)
     {
-        LineItem item = new(Guid.NewGuid(), product.Id, Id, product.Money);
+        LineItem item = new(Guid.NewGuid(), product.Id, Id, product.Money, product.Qty);
         _lineItems.Add(item);
     }
 
-    public void AddMany(IList<ProductIdPriceDto> products)
+    public void AddMany(IEnumerable<ProductIdPriceDto> products)
     {
         IEnumerable<LineItem> lineItems = products
-            .Select(product => new LineItem(Guid.NewGuid(), product.Id, Id, product.Money));
+            .Select(product => new LineItem(Guid.NewGuid(), product.Id, Id, product.Money, product.Qty));
         ((List<LineItem>)_lineItems).AddRange(lineItems);
     }
 
@@ -53,8 +56,14 @@ public sealed class Order : Entity, IAuditableEntity
                                 lineItem.Id,
                                 lineItem.ProductId,
                                 Id,
-                                Money.Create(lineItem.Price, lineItem.Currency).Value);
+                                Money.Create(lineItem.Price, lineItem.Currency).Value,
+                                lineItem.Qty);
 
         ((List<LineItem>)_lineItems).AddRange(lineItems);
+    }
+
+    public void UpdateOrderStatus(OrderStatus status)
+    {
+        OrderStatus = status;
     }
 }

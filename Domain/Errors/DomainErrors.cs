@@ -73,7 +73,7 @@ public static class DomainErrors
 
     public static class Product
     {
-        public static Func<IList<Guid>, Error> ProductIdsNotFound => ids => new(
+        public static Func<IEnumerable<Guid>, Error> ProductIdsNotFound => ids => new(
             "Product.ProductIdsNotFound",
             $"Product(s) with ID(s) {string.Join(", ", ids)} not found.");
     }
@@ -96,5 +96,7 @@ public static class DomainErrors
     public static class Order
     {
         public static Func<Guid,Error> OrderNotFound => id => new("Order.OrderNotFound", $"This Order '{id}' is not found");
+
+        public static Func<Guid, Error> ThisOrderIsNotPending => id => new("Order.ThisOrderIsNotPending", $"This Order '{id}' is not Pending");
     }
 }

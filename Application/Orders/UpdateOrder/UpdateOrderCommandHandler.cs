@@ -21,6 +21,11 @@ public sealed class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderComma
             return DomainErrors.Order.OrderNotFound(request.OrderId);
         }
 
+        if (order.OrderStatus != OrderStatus.Pending)
+        {
+            return DomainErrors.Order.ThisOrderIsNotPending(request.OrderId);
+        }
+
         order.UpdateMany(request.LineItems);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

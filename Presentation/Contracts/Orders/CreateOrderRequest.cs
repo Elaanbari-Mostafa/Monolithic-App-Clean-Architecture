@@ -1,4 +1,6 @@
-﻿namespace Presentation.Contracts.Orders;
+﻿using Domain.Dtos.Products;
+
+namespace Presentation.Contracts.Orders;
 
 public sealed record CreateOrderRequest(
-                            HashSet<Guid> ProductIds);
+                             HashSet<ProductIdQtyDto> Products);

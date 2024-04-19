@@ -2,8 +2,9 @@
 
 namespace Domain.Dtos.Products;
 
-public sealed record ProductIdPriceDto()
+public sealed record ProductIdPriceDto
 {
     public Guid Id { get; set; }
     public Money Money { get; set; }
+    public int Qty { get; set; }
 }

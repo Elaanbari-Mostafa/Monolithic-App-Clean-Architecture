@@ -6,7 +6,7 @@ internal static class Routers
     public const string root = "api";
     public const string version = "v1";
     public const string Rule = root + "/" + version + "/";
-    public const string SingleRoute = "/{id:Guid}";
+    public const string SingleRoute = "{id:Guid}";
     #endregion
 
     #region Order
@@ -36,10 +36,22 @@ internal static class Routers
 
         public const string Create = $"{Prefix}Create";
         public const string Update = $"{Prefix}Update";
-        public const string GetUserById = $"{Prefix}Update{SingleRoute}";
-        public const string DeleteById = $"{Prefix}Delete{SingleRoute}";
+        public const string GetUserById = $"{Prefix}{SingleRoute}";
+        public const string DeleteById = $"{Prefix}{SingleRoute}";
         public const string Login = $"{Prefix}Login";
         public const string Register = $"{Prefix}Register";
+    }
+    #endregion
+
+    #region Payment
+    public static class Payment
+    {
+        public const string Prefix = Rule + "Payment/";
+
+        public const string Create = $"{Prefix}Create";
+        public const string Update = $"{Prefix}Update";
+        public const string GetPaymentById = $"{Prefix}{SingleRoute}";
+        public const string DeletePaymentById = $"{Prefix}{SingleRoute}";
     }
     #endregion
 }

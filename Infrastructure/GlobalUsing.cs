@@ -12,3 +12,8 @@ global using Infrastructure.Constants;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Application.Abstractions;
 global using Domain.Errors;
+global using Infrastructure.Authentification;
+global using Infrastructure.Interceptors;
+global using Infrastructure.Repositories;
+global using Microsoft.AspNetCore.Authorization;
+global using Microsoft.Extensions.DependencyInjection;

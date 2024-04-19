@@ -1,7 +1,6 @@
-﻿using Application.Abstractions.Messaging;
-using Domain.Entities;
+﻿using Domain.Dtos.Products;
 
 namespace Application.Orders.CreateOrder;
 
 public sealed record CreateOrderCommand(
-                            HashSet<Guid> ProductIds) : ICommand<Guid>;
+                            HashSet<ProductIdQtyDto> Products) : ICommand<Guid>;
