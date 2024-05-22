@@ -5,7 +5,7 @@ using Domain.ValueObjects;
 
 namespace Domain.Entities;
 
-public sealed class Payment : Entity
+public sealed class Payment : Entity, IAuditableEntity
 {
     public Money Amount { get; private set; }
     public DateTime PaymentDate { get; private set; }
@@ -13,6 +13,8 @@ public sealed class Payment : Entity
     public PaymentMethod Method { get; private set; }
     public Order Order { get; private set; }
     public Guid OrderId { get; private set; }
+    public DateTime CreatedOnUtc { get; set; }
+    public DateTime? ModifiedOnUtc { get; set; }
 
     private Payment(Guid id) : base(id) { }
 
