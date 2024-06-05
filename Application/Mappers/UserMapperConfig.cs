@@ -1,6 +1,4 @@
 ﻿using Application.Users.GetUserById;
-using Domain.Entities;
-using Mapster;
 
 namespace Application.Mappers;
 

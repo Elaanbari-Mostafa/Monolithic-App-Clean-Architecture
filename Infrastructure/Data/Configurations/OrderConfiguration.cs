@@ -1,6 +1,4 @@
-﻿using Mapster.Utils;
-
-namespace Infrastructure.Data.Configurations;
+﻿namespace Infrastructure.Data.Configurations;
 
 internal sealed class OrderConfiguration : IEntityTypeConfiguration<Order>
 {

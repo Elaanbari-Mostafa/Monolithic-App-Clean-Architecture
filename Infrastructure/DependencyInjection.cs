@@ -28,7 +28,7 @@ public static class DependencyInjection
         service.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
-    public static void RegisterAllTypes<T>(this IServiceCollection services,
+    private static void RegisterAllTypes<T>(this IServiceCollection services,
         ServiceLifetime lifetime = ServiceLifetime.Transient)
     {
         var typesFromAssemblie = InfrastructureAssemblyReference.Assembly.

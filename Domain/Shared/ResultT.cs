@@ -1,6 +1,6 @@
 ﻿namespace Domain.Shared;
 
-public sealed class Result<TValue> : Result
+public class Result<TValue> : Result
 {
     private readonly TValue? _value;
 

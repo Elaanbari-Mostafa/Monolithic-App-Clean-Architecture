@@ -18,35 +18,29 @@ public sealed class Order : Entity, IAuditableEntity
     public DateTime? ModifiedOnUtc { get; set; }
 
     private Order(Guid id, Guid userId) : base(id)
-    {
-        OrderStatus = OrderStatus.Pending;
-        UserId = userId;
-    }
-
-    public static Order Create(Guid userId)
-    {
-        Order order = new(Guid.NewGuid(), userId);
-        return order;
-    }
-
-    public void Add(ProductIdPriceDto product)
-    {
-        LineItem item = new(Guid.NewGuid(), product.Id, Id, product.Money, product.Qty);
-        _lineItems.Add(item);
-    }
-
-    public void AddMany(IEnumerable<ProductIdPriceDto> products)
-    {
-        IEnumerable<LineItem> lineItems = products
-            .Select(product => new LineItem(Guid.NewGuid(), product.Id, Id, product.Money, product.Qty));
-        ((List<LineItem>)_lineItems).AddRange(lineItems);
-    }
+        => (OrderStatus, UserId) 
+        = (OrderStatus.Pending, userId);
 
     private Money CalculateTotalPrice()
     {
         return Money.Create(
             _lineItems.Sum(item => item.Money.Price),
             _lineItems.First().Money.Currency).Value;
+    }
+
+    #region Create Order
+    public static Order Create(Guid userId)
+    {
+        Order order = new(Guid.NewGuid(), userId);
+        return order;
+    }
+    #endregion
+
+    #region Add or update product
+    public void Add(ProductIdPriceDto product)
+    {
+        LineItem item = new(Guid.NewGuid(), product.Id, Id, product.Money, product.Qty);
+        _lineItems.Add(item);
     }
 
     public void UpdateMany(IList<LineItemDto> lineItemsDto)
@@ -62,8 +56,18 @@ public sealed class Order : Entity, IAuditableEntity
         ((List<LineItem>)_lineItems).AddRange(lineItems);
     }
 
-    public void UpdateOrderStatus(OrderStatus status)
+    public void AddMany(IEnumerable<ProductIdPriceDto> products)
     {
-        OrderStatus = status;
+        IEnumerable<LineItem> lineItems = products
+            .Select(product => new LineItem(Guid.NewGuid(), product.Id, Id, product.Money, product.Qty));
+        ((List<LineItem>)_lineItems).AddRange(lineItems);
     }
+    #endregion
+
+    #region Change order status
+    public void MakeAsProcessing() => OrderStatus = OrderStatus.Processing;
+    public void MakeAsReturned() => OrderStatus = OrderStatus.Returned;
+    public void MakeAsShipped() => OrderStatus = OrderStatus.Shipped;
+    public void MakeAsCompleted() => OrderStatus = OrderStatus.Completed;
+    #endregion
 }

@@ -62,7 +62,7 @@ public static class DomainErrors
 
     public static class Role
     {
-        public static readonly Error RoleNotFound = new("Role.RoleNotFound", "This Role is not found");
+        public static Func<int, Error> RoleNotFound => id => new("Role.RoleNotFound", $"This Role '{id}' is not found");
     }
 
     public static class Brand
@@ -76,6 +76,8 @@ public static class DomainErrors
         public static Func<IEnumerable<Guid>, Error> ProductIdsNotFound => ids => new(
             "Product.ProductIdsNotFound",
             $"Product(s) with ID(s) {string.Join(", ", ids)} not found.");
+
+        public static Func<Guid, Error> ProductNotFound => id => new("Product.ProductNotFound", $"This Product '{id}' is not found");
     }
 
     public static class Jwt
@@ -95,7 +97,7 @@ public static class DomainErrors
 
     public static class Order
     {
-        public static Func<Guid,Error> OrderNotFound => id => new("Order.OrderNotFound", $"This Order '{id}' is not found");
+        public static Func<Guid, Error> OrderNotFound => id => new("Order.OrderNotFound", $"This Order '{id}' is not found");
 
         public static Func<Guid, Error> ThisOrderIsNotPending => id => new("Order.ThisOrderIsNotPending", $"This Order '{id}' is not Pending");
     }

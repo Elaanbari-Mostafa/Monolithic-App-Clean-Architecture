@@ -14,8 +14,8 @@ public sealed class ProductRepository : IProductRepository
     public async Task<IList<Product>> GetProductByIdsAsync(IEnumerable<Guid> productIds)
     {
         List<Product> existingProductIds = await _dbContext.Set<Product>()
-        .Where(p => productIds.Contains(p.Id))
-        .ToListAsync();
+            .Where(p => productIds.Contains(p.Id))
+            .ToListAsync();
 
         return existingProductIds;
     }
@@ -37,6 +37,13 @@ public sealed class ProductRepository : IProductRepository
             .Select(p => p.CreateDto<T>(null))
             .FirstOrDefaultAsync();
 
+        return product;
+    }
+
+    public async Task<Product?> GetProductByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        Product? product = await _dbContext.Set<Product>()
+                .FirstOrDefaultAsync(p => p.Id == id,cancellationToken);
         return product;
     }
 }

@@ -18,8 +18,14 @@ public sealed class PaymentController : ApiController
 
         var result = await Sender.Send(command, cancellationToken);
 
-        return result.MapActionResult(
-            id => Ok(id),
-            BadRequest);
+        if (result.IsFailure)
+        {
+            return HandleFailue(result);
+        }
+
+        return Ok(result.Value);
+        //return result.MapActionResult(
+        //        id => Ok(id),
+        //        BadRequest);
     }
 }

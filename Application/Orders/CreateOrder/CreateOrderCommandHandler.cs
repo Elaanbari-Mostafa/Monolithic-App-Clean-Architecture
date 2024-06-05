@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos.Products;
+using System.Linq;
 
 namespace Application.Orders.CreateOrder;
 
@@ -31,7 +32,7 @@ public sealed class CreateOrderCommandHandler : ICommandHandler<CreateOrderComma
 
         IEnumerable<ProductIdPriceDto> productIdPrice = await _productRepository
             .GetByIdsDtoAsync<ProductIdPriceDto>(request.Products.Select(x => x.Id));
-        IEnumerable<Guid> missingProductIds = productIdPrice.Select(x => x.Id).Except(productIdPrice.Select(x => x.Id));
+        IEnumerable<Guid> missingProductIds = request.Products.Select(x => x.Id).Except(productIdPrice.Select(x => x.Id));
         if (missingProductIds.Any())
         {
             return Result.Failure<Guid>(DomainErrors.Product.ProductIdsNotFound(missingProductIds));

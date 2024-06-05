@@ -39,4 +39,14 @@ public sealed class Product : Entity, IAuditableEntity
         int stockQuantity,
         bool isActive)
     => new(Guid.NewGuid(), name, description, stockQuantity, money, brand, isActive);
+
+    public void Update(
+    string name,
+    string description,
+    int stockQuantity,
+    Money money,
+    Brand brand,
+    bool isActive)
+  => (Name, Description, StockQuantity, IsActive, Money, Brand)
+   = (name, description, stockQuantity, isActive, money, brand);
 }

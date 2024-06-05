@@ -1,10 +1,6 @@
 using Application;
 using Infrastructure;
-using Infrastructure.Data;
-using Infrastructure.Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Presentation;
 using Web.OptionsSetup;
 

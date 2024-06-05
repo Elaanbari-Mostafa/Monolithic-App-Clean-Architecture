@@ -27,19 +27,16 @@ public sealed class Payment : Entity, IAuditableEntity
         OrderId = orderId;
     }
 
+    #region Create Payment
     public static Payment Create(PaymentMethod method, OrderWithPriceDto orderWithItems)
     {
         Payment payment = new(Guid.NewGuid(), orderWithItems.Money, method, orderWithItems.Order.Id);
         return payment;
     }
+    #endregion
 
-    public void MarkAsCompleted()
-    {
-        Status = PaymentStatus.Completed;
-    }
-
-    public void MarkAsFailed()
-    {
-        Status = PaymentStatus.Failed;
-    }
+    #region Change Payment Status
+    public void MarkAsCompleted() => Status = PaymentStatus.Completed;
+    public void MarkAsFailed() => Status = PaymentStatus.Failed;
+    #endregion
 }
