@@ -9,3 +9,4 @@ global using Domain.ValueObjects;
 global using Mapster;
 global using Domain.Enums;
 global using FluentValidation;
+global using Application.Validators;

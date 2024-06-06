@@ -8,10 +8,7 @@ public sealed class UpdateOrderCommandHandler : ICommandHandler<UpdateOrderComma
     public UpdateOrderCommandHandler(
         IOrderRepository orderRepository,
         IUnitOfWork unitOfWork)
-    {
-        _orderRepository = ThrowIfNull(orderRepository);
-        _unitOfWork = ThrowIfNull(unitOfWork);
-    }
+    => (_orderRepository, _unitOfWork) = (ThrowIfNull(orderRepository), ThrowIfNull(unitOfWork));
 
     public async Task<Result> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
     {
