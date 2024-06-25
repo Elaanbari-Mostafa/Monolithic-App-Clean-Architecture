@@ -45,6 +45,11 @@ public static class DomainErrors
                        "Password.NewPasswordEqualToThePreviousPassword",
                        "A new password can’t be equal to the previous password");
         }
+
+        public static class Money
+        {
+            public static readonly Error ThePriceIsNegatif = new("Money.ThePriceIsNegatif", "The Price Is Negatif !");
+        }
     }
 
     public static class User

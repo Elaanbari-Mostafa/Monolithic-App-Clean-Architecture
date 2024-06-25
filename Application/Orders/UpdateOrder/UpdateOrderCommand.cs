@@ -1,6 +1,4 @@
-﻿using Application.Abstractions.Messaging;
-using Domain.Dtos.LineItems;
-using Domain.Entities;
+﻿using Domain.Dtos.LineItems;
 
 namespace Application.Orders.UpdateOrder;
 

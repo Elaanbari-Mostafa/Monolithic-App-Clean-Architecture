@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace Infrastructure.Authentification;
+﻿namespace Infrastructure.Authentification;
 
 public sealed class HasPermissionAttribute : AuthorizeAttribute
 {

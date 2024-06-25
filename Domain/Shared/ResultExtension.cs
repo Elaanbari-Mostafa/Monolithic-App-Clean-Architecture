@@ -5,6 +5,16 @@ namespace Domain.Shared;
 
 public static class ResultExtension
 {
+    /// <summary>
+    /// Ensur<TValue> 
+    /// if the result is true and predicate is false return the result
+    /// else return Failure<TValue>(error)
+    /// </summary>
+    /// <typeparam name="TValue"></typeparam>
+    /// <param name="result"></param>
+    /// <param name="predicate"></param>
+    /// <param name="error"></param>
+    /// <returns>Result<TValue></returns>
     public static Result<TValue> Ensure<TValue>(this Result<TValue> result, Func<TValue, bool> predicate, Error error)
         => (result.IsSuccess && !predicate(result.Value))
                 ? result

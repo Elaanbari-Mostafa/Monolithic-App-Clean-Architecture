@@ -35,7 +35,10 @@ public sealed class Password : ValueObject
     private static bool IsBcryptHash(string hashedValue)
     {
         // BCrypt hashes start with "$2a$", "$2b$", "$2y$", or "$2x$"
-        return hashedValue.StartsWith("$2a$") || hashedValue.StartsWith("$2b$") || hashedValue.StartsWith("$2y$") || hashedValue.StartsWith("$2x$");
+        return hashedValue.StartsWith("$2a$") || 
+               hashedValue.StartsWith("$2b$") || 
+               hashedValue.StartsWith("$2y$") || 
+               hashedValue.StartsWith("$2x$");
     }
 
     public static Password FromHashedString(string hashedValue)

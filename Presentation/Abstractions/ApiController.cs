@@ -6,6 +6,7 @@ namespace Presentation.Abstractions;
 public abstract class ApiController : ControllerBase
 {
     protected readonly ISender Sender;
+
     protected ApiController(ISender sender) => Sender = sender ?? throw new ArgumentNullException(nameof(sender));
 
     protected IActionResult HandleFailue(Result result)
@@ -13,17 +14,17 @@ public abstract class ApiController : ControllerBase
         {
             { IsFailure: false } => throw new InvalidOperationException("This result is not failure"),
             IValidationResult validationResult => BadRequest(
-                CreateProblemeDetails("Validation Error",
+                    CreateProblemeDetails("Validation Error",
                                       StatusCodes.Status400BadRequest,
                                       result.Error,
                                       validationResult.Errors)),
             _ => BadRequest(
-                CreateProblemeDetails("Bad request",
+                    CreateProblemeDetails("Bad request",
                                       StatusCodes.Status400BadRequest,
                                       result.Error)),
         };
 
-    private ProblemDetails CreateProblemeDetails(
+    private static ProblemDetails CreateProblemeDetails(
         string title,
         int status,
         Error error,

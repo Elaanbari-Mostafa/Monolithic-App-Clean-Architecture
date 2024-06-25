@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-
-namespace Infrastructure.Authentification;
+﻿namespace Infrastructure.Authentification;
 
 internal sealed class PermissionAutherizationHandler : AuthorizationHandler<PermissionRequirement>
 {

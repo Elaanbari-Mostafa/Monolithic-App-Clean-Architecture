@@ -11,13 +11,11 @@ internal sealed class PermissionService : IPermissionService
     {
         var permissions = await _context.Set<User>()
                                 .Where(x => x.Id == userId)
-                                .Include(x => x.RoleUsers)
-                                .ThenInclude(x => x.Role)
-                                .ThenInclude(x => x.Permissions)
                                 .Select(x => x.RoleUsers
                                                 .Select(x => x.Role)
                                                 .SelectMany(x => x.Permissions))
                                 .SelectMany(x => x.Select(x => x.Name))
+                                .Distinct()
                                 .ToArrayAsync();
 
         return permissions.ToHashSet();

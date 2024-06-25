@@ -1,4 +1,5 @@
-﻿using Domain.Primitives;
+﻿using Domain.Errors;
+using Domain.Primitives;
 using Domain.Shared;
 
 namespace Domain.ValueObjects;
@@ -15,9 +16,9 @@ public sealed class Money : ValueObject
     }
 
     public static Result<Money> Create(decimal price, string currency)
-    {
-        return new Money(price, currency);
-    }
+       => Result.Create(price)
+            .Ensure(p => p < 0,DomainErrors.ValueObject.Money.ThePriceIsNegatif)
+            .Map(p => new Money(p, currency));
 
     public override IEnumerable<object> GetAtomicValues()
     {

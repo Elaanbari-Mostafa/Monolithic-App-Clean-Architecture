@@ -1,21 +1,38 @@
-﻿namespace Infrastructure;
+﻿
+
+
+namespace Infrastructure;
 
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection service)
     {
-        service.AddDbContext<ApplicationDbContext>();
-        service.RegisterAllTypes<IDbInterceptor>(ServiceLifetime.Singleton);
+        AddDb(ref service);
         AddRepositorys(ref service);
         service.AddHttpContextAccessor();
-        service.AddSingleton<IJwtProvider, JwtProvider>();
-        service.AddAuthorization();
-        service.AddSingleton<IAuthorizationHandler,PermissionAutherizationHandler>();
-        service.AddScoped<IPermissionService,PermissionService>();
-        service.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
-        
+        AddAuthentification(ref service);
+        AddAuthorization(ref service);
         return service;
+    }
+
+    private static void AddAuthentification(ref IServiceCollection service)
+    {
+        service.AddSingleton<IJwtProvider, JwtProvider>();
+    }
+
+    private static void AddDb(ref IServiceCollection service)
+    {
+        service.AddDbContext<ApplicationDbContext>();
+        service.RegisterAllTypes<IDbInterceptor>(ServiceLifetime.Singleton);
+    }
+
+    private static void AddAuthorization(ref IServiceCollection service)
+    {
+        service.AddAuthorization();
+        service.AddSingleton<IAuthorizationHandler, PermissionAutherizationHandler>();
+        service.AddScoped<IPermissionService, PermissionService>();
+        service.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
     }
 
     private static void AddRepositorys(ref IServiceCollection service)
